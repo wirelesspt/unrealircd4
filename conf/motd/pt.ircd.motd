@@ -1,0 +1,100 @@
+
+Revised: 01/01/2017
+
+       __________  ____________________  _______   ____ __ __________
+      / ____/ __ \/ ____/ ____/_  __/ / / /  _/ | / / //_// ____/ __ \
+     / /_  / /_/ / __/ / __/   / / / /_/ // //  |/ / ,<  / __/ / /_/ /
+    / __/ / _, _/ /___/ /___  / / / __  // // /|  / /| |/ /___/ _, _/
+   /_/   /_/ |_/_____/_____/ /_/ /_/ /_/___/_/ |_/_/ |_/_____/_/ |_|
+
+   _       _  _  ___    ___    _      ___    ___    ___    ___   _____
+  ( )  _  ( )(_)|  _`\ (  _`\ ( )    (  _`\ (  _`\ (  _`\ (  _`\(_   _)
+  | | ( ) | || || (_) )| (_(_)| |    | (_(_)| (_(_)| (_(_)| |_) ) | |
+  | | | | | || || ,  / |  _)_ | |  _ |  _)_ `\__ \ `\__ \ | ,__/' | |
+  | (_/ \_) || || |\ \ | (_( )| |_( )| (_( )( )_) |( )_) || |     | |
+  `\___x___/'(_)(_) (_)(____/'(____/'(____/'`\____)`\____)(_)     (_)
+
+                         Fundada a 15/02/2009
+
+  -------------------------------------------------------------------
+
+  Administrador:   suporte@wirelesspt.net
+
+  Chave publica:   http://wirelesspt.net/arquivos/pk
+  Website:         http://wirelesspt.net/wiki/irc
+
+  Endereços:      irc.wirelesspt.net       Port: 6697   IP max: 5
+                  l6xsibhkdrsdwm53.onion   Port: 6697   IP max: 5
+
+
+  Criptografia:    OTR, Blowfish, SSL, GNUTLS, OpenPGP, RSA 4096,
+                   Cryptosetup, LUKS, Tor
+
+  Privacidade:     Para a tua privacidade forçamos os modos: Tsipxz
+  Vhost geral:     Digita: /vhost network vhost
+
+  -------------------------------------------------------------------
+
+                   Necessitas de ajuda ? Digita: /join #Help
+
+  Informação:       /motd          |  Regras do servidor:  /rules
+  Lista de canais:  /list          |  Lista de servidores: /stats o       
+  Sistema de ajuda: /helpop        |  Vhosts genérico:     /stats V
+  Bloquear Pvt:     /mode nick +D  |  Canais oficiais:     /stats j
+  Bloquear invites: /mode nick +N  |  Funcionalidades:     /cap
+  Pessoal da rede:  /staff         |  Ircops activos:      /ircops
+  Administrador:    /admin         |  
+
+  -------------------------------------------------------------------
+
+  A tua ligação não é 100% anónima. Por favor desliga e usa o nosso 
+  servidor Tor .onion para acesso á à rede de forma a assegurar a tua
+  privacidade e segurançã assim como de todos os restantes na rede.
+
+  ------------------------- Recomendação ----------------------------
+
+  A rede e os serviços nela disponibilizados servem para segurança e
+  conveniencia dos utilizadores da net. Estes serviços são para ser
+  utilizados com respeito e não para abuso ou causar danos na rede.
+  Nenhum membro desta rede deve utilizar estes serviços de forma a
+  causar alterações na privacidade dos utilizadores ou canais 
+  registados pelos mesmos excepto em caso e manutenção ou demonstração
+  de operações normais à utilização do dia a dia dos serviços de rede.
+ 
+  Tendo isto em conta e excepto para explicar como se devem utilizar
+  os serviços ou assistir com explicações técnicas relacionadas com 
+  a rede e seu funcionamento e perguntas inerentes à natureza técnica
+  da red e serviços; não se deve envolver a administração e ou 
+  operadores de rede.
+
+  --------------------------- Informação -----------------------------
+
+  Os operadores desta rede NÃO estão autorizados a envolver-se com os
+  assuntos que decorrem nos canais a menos que estes canais violem as
+  regras de utilização da rede definidas em /rules
+  Todos e quaisquer problemas pessoais devem ser tratados ao nível 
+  pessoal e NÃO devem envolver operadores de rede!
+
+  ------------------------------ Aviso -------------------------------
+
+  Procura por proxys e drones são activados assim que se o cliente se 
+  liga à rede. Se preferes não ser also desta inspeção desde desligar
+  imediatamente.
+  Este servidor, sua administração e alojamento NÃO são responsáveis
+  pelo conteudo que por ele passa.
+  O uso deste servidor é um privilégio que pode ser revogado a qualquer
+  momento. O fundador/a de cada canal é solenemente responsável por 
+  administrar o seu canal fazendo uso recomendações e regras definidas
+  pela rede. A rede não aceita qualquer responsabilidade pelas acções
+  dos membros do canal ou seus fundadores.
+
+  -------------------------- Regras gerais ---------------------------
+  
+  Assim que estabeleces ligação a esta rede, estás as concordar com as 
+  regras da rede  especificadas em /motd /rules /botmotd & /opermotd
+  e como tal, sujeito/a às mesmas.
+
+     Recomenda-se a leitura do /motd /rules /botmotd & /opermotd
+
+  --------------------------------------------------------------------
+

@@ -1,0 +1,36 @@
+# https://unrealircd.org/docs/Loadmodule_directive
+# https://www.unrealircd.org/docs/Dev:Module#UnrealIRCd_4
+
+# loadmodule <file-name-without-suffix>;
+
+# If you want to load modules\m_something.dll
+# loadmodule "m_something";
+
+# Apply vhosts at connect time based on users' raw nick formats or IPs
+loadmodule "third/m_autovhost";
+
+# Command /getlegitusers to show user/bot count across the network
+loadmodule "third/m_getlegitusers";
+
+# Function to remove *lines from current server
+loadmodule "third/m_rmtkl";
+
+# Adds umode +Z to prevent you from messaging non-SSL users in either direction
+loadmodule "third/m_securequery";
+
+# This module adds a umode +N to block unwanted/mass invites
+loadmodule "third/m_noinvite";
+
+# Gives a list of clones based on the specified options Clones are listed by a 
+# nickname or by a minimal number of oncurrent sessions connecting from the local 
+# or the given server"
+loadmodule "third/m_clones";
+
+# This module disallows freshly connected clients trying to send private messages until
+# exceeding a certain timeout, like bots connecting and immediately spamming actual
+# users in private. Needs configuration in network set block
+#loadmodule "third/m_pmdelay";
+
+# Block messages that contain a configurable amount of capital letters
+#loadmodule "third/m_anticaps";
+

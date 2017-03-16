@@ -1,0 +1,97 @@
+
+Revised: 01/01/2017
+
+       __________  ____________________  _______   ____ __ __________ 
+      / ____/ __ \/ ____/ ____/_  __/ / / /  _/ | / / //_// ____/ __ \
+     / /_  / /_/ / __/ / __/   / / / /_/ // //  |/ / ,<  / __/ / /_/ /
+    / __/ / _, _/ /___/ /___  / / / __  // // /|  / /| |/ /___/ _, _/
+   /_/   /_/ |_/_____/_____/ /_/ /_/ /_/___/_/ |_/_/ |_/_____/_/ |_|
+
+   _       _  _  ___    ___    _      ___    ___    ___    ___   _____  
+  ( )  _  ( )(_)|  _`\ (  _`\ ( )    (  _`\ (  _`\ (  _`\ (  _`\(_   _)
+  | | ( ) | || || (_) )| (_(_)| |    | (_(_)| (_(_)| (_(_)| |_) ) | |
+  | | | | | || || ,  / |  _)_ | |  _ |  _)_ `\__ \ `\__ \ | ,__/' | |
+  | (_/ \_) || || |\ \ | (_( )| |_( )| (_( )( )_) |( )_) || |     | |
+  `\___x___/'(_)(_) (_)(____/'(____/'(____/'`\____)`\____)(_)     (_)
+
+                        Founded in 15/02/2009
+
+  -------------------------------------------------------------------
+
+  Admin Contact:   support@wirelesspt.net
+
+  Public key:      http://wirelesspt.net/arquivos/pk
+                   http://pbmr3mbkuljnd25q.onion/arquivos/pk
+
+  Website:         http://wirelesspt.net/wiki/irc
+                   http://pbmr3mbkuljnd25q.onion/wiki/irc
+
+  Addresses:       irc.wirelesspt.net       Port: 6697   IP max: 5
+                   l6xsibhkdrsdwm53.onion   Port: 6697   IP max: 5
+
+  Cryptography:    OTR, Blowfish, SSL, GNUTLS, OpenPGP, RSA 4096,
+                   Cryptosetup, LUKS, Tor
+
+  Privacy:         For your privacy we set you the modes: Tsipxz
+  Generic Vhost:   Type: /vhost network vhost
+
+  -------------------------------------------------------------------
+
+                     Need help ? Type: /join #Help
+
+  Information:     /motd           |    Server rules:      /rules
+  Channels list:   /list           |    Operators list:    /stats o       
+  Help system:     /helpop         |    Default Vhosts:    /stats V
+  Block PMs:       /mode nick +D   |    Official channels: /stats j
+  Block invites:   /mode nick +N   |    Server functions:  /cap
+  Network staff:   /staff          |    Active Ircops:     /ircops
+  Administrator:   /admin          |    
+
+  -------------------------------------------------------------------
+
+  Your connection is currently NOT 100% annonymous. Please disconnect 
+  and use our Tor .onion address to access the network to ensure your 
+  privacy and security as well as everyone else. 
+
+  -------------------------- Guidelines -----------------------------
+
+  The network & services are here to provide security and convenience 
+  for every user of the net. These services are to be treated with
+  respect and shall not be used in an abusive or exploitive manner
+  No member of this network will use services in such a manner as to 
+  intrude upon the privacy of registered channels or network users
+  except for normal actions as required in the day-to-day operation  
+  of the network. Therefore other than explaining how to use these 
+  services and assisting with all technical information related to the 
+  use of the network and information regarding the specifics of those
+  questions, do not involve the adminstration and/or operators.
+
+  ---------------------------- Notice --------------------------------
+
+  Network Operators are NOT allowed to get into channel affairs unless 
+  the channel violates a network rule defined in /rules
+  If you are experiencing personal problems, or just ops problem
+  Please do NOT get the Network Operators involved! 
+
+  --------------------------- Disclaimer ----------------------------- 
+
+  Proxy and Drone (version) scans are issued upon connecting
+  If you wish not to be auto scanned please disconnect now
+  This server, its staff and the people hosting it are *NOT* the ones
+  responsible for the content that passes through this server 
+  Use of this server is a *privilege* which may be removed at any time
+  Each channel founder is responsible for policing their own channel(s)
+  by the correct laws and guidelines. We do not accept responsibility
+  for the actions of channel members or their founders.
+  
+  ------------------------ General Rules ----------------------------
+  
+  Uppon connecting to this network, you are agreeing with the network
+  general information /motd /rules /botmotd & /opermotd and therefore 
+  being subject to them.
+  
+    Please take a moment to read /motd /rules /botmotd & /opermotd
+
+  -------------------------------------------------------------------
+
+

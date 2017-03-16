@@ -1,0 +1,62 @@
+
+Revised: 01/01/2017
+
+       __________  ____________________  _______   ____ __ __________
+      / ____/ __ \/ ____/ ____/_  __/ / / /  _/ | / / //_// ____/ __ \
+     / /_  / /_/ / __/ / __/   / / / /_/ // //  |/ / ,<  / __/ / /_/ /
+    / __/ / _, _/ /___/ /___  / / / __  // // /|  / /| |/ /___/ _, _/
+   /_/   /_/ |_/_____/_____/ /_/ /_/ /_/___/_/ |_/_/ |_/_____/_/ |_|
+
+   _       _  _  ___    ___    _      ___    ___    ___    ___   _____
+  ( )  _  ( )(_)|  _`\ (  _`\ ( )    (  _`\ (  _`\ (  _`\ (  _`\(_   _)
+  | | ( ) | || || (_) )| (_(_)| |    | (_(_)| (_(_)| (_(_)| |_) ) | |
+  | | | | | || || ,  / |  _)_ | |  _ |  _)_ `\__ \ `\__ \ | ,__/' | |
+  | (_/ \_) || || |\ \ | (_( )| |_( )| (_( )( )_) |( )_) || |     | |
+  `\___x___/'(_)(_) (_)(____/'(____/'(____/'`\____)`\____)(_)     (_)
+
+                         Fundada a 15/02/2009
+
+  -------------------------------------------------------------------
+
+  Administrador:   suporte@wirelesspt.net
+
+  Chave pública:   http://wirelesspt.net/arquivos/pk
+  Website:         http://wirelesspt.net/wiki/irc
+
+  Endereços:      irc.wirelesspt.net       Port: 6697   IP max: 5
+                  l6xsibhkdrsdwm53.onion   Port: 6697   IP max: 5
+
+  Criptografia:    OTR, Blowfish, SSL, GNUTLS, OpenPGP, RSA 4096,
+                   Cryptosetup, LUKS, Tor
+
+  Privacidade:     Para a tua privacidade forçamos os modos: Tsipxz
+  Vhost geral:     Digita: /vhost network vhost
+
+  -------------------------------------------------------------------
+
+                   Necessitas de ajuda ? Digita: /join #Help
+
+  Informação:       /motd          |  Regras do servidor:  /rules
+  Lista de canais:  /list          |  Lista de servidores: /stats o       
+  Sistema de ajuda: /helpop        |  Vhosts genérico:     /stats V
+  Bloquear Pvt:     /mode nick +D  |  Canais oficiais:     /stats j
+  Bloquear invites: /mode nick +N  |  Funcionalidades:     /cap
+  Pessoal da rede:  /staff         |  Ircops activos:      /ircops
+  Administrador:    /admin         |  
+
+  -------------------------------------------------------------------
+
+  A tua ligação não é 100% anónima. Por favor desliga e usa o nosso 
+  servidor Tor .onion para acesso árede de forma a assegurar a tua
+  privacidade e segurançã assim como de todos os restantes na rede.
+
+  -------------------------- Regras gerais ---------------------------
+  
+  Assim que estabeleces ligação a esta rede, estás as concordar com as 
+  regras da rede  especificadas em /motd /rules /botmotd & /opermotd
+  e como tal, sujeito/a ás mesmas.
+
+     Recomenda-se a leitura do /motd /rules /botmotd & /opermotd
+
+  --------------------------------------------------------------------
+

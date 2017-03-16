@@ -1,0 +1,66 @@
+
+Revised: 01/01/2017
+
+       __________  ____________________  _______   ____ __ __________ 
+      / ____/ __ \/ ____/ ____/_  __/ / / /  _/ | / / //_// ____/ __ \
+     / /_  / /_/ / __/ / __/   / / / /_/ // //  |/ / ,<  / __/ / /_/ /
+    / __/ / _, _/ /___/ /___  / / / __  // // /|  / /| |/ /___/ _, _/
+   /_/   /_/ |_/_____/_____/ /_/ /_/ /_/___/_/ |_/_/ |_/_____/_/ |_|
+
+   _       _  _  ___    ___    _      ___    ___    ___    ___   _____  
+  ( )  _  ( )(_)|  _`\ (  _`\ ( )    (  _`\ (  _`\ (  _`\ (  _`\(_   _)
+  | | ( ) | || || (_) )| (_(_)| |    | (_(_)| (_(_)| (_(_)| |_) ) | |
+  | | | | | || || ,  / |  _)_ | |  _ |  _)_ `\__ \ `\__ \ | ,__/' | |
+  | (_/ \_) || || |\ \ | (_( )| |_( )| (_( )( )_) |( )_) || |     | |
+  `\___x___/'(_)(_) (_)(____/'(____/'(____/'`\____)`\____)(_)     (_)
+
+                         Founded a 15/02/2009
+
+  -------------------------------------------------------------------
+
+  Admin Contact:   support@wirelesspt.net
+
+  Public key:      http://wirelesspt.net/arquivos/pk
+                   http://pbmr3mbkuljnd25q.onion/arquivos/pk
+
+  Website:         http://wirelesspt.net/wiki/irc
+                   http://pbmr3mbkuljnd25q.onion/wiki/irc
+
+  Addresses:       irc.wirelesspt.net       Port: 6697   IP max: 5
+                   l6xsibhkdrsdwm53.onion   Port: 6697   IP max: 5
+
+  Cryptography:    OTR, Blowfish, SSL, GNUTLS, OpenPGP, RSA 4096,
+                   Cryptosetup, LUKS, Tor
+
+  Privacy:         For your privacy we set you the modes: Tsipxz
+  Generic Vhost:   Type: /vhost network vhost
+
+  -------------------------------------------------------------------
+
+                     Need help ? Type: /join #Help
+
+  Information:     /motd           |    Server rules:      /rules
+  Channels list:   /list           |    Operators list:    /stats o       
+  Help system:     /helpop         |    Default Vhosts:    /stats V
+  Block PMs:       /mode nick +D   |    Official channels: /stats j
+  Block invites:   /mode nick +N   |    Server functions:  /cap
+  Network staff:   /staff          |    Active Ircops:     /ircops
+  Administrator:   /admin          |
+
+  -------------------------------------------------------------------
+
+  Your connection is currently NOT 100% annonymous. Please disconnect 
+  and use our Tor .onion address to access the network to ensure your 
+  privacy and security as well as everyone else. 
+
+  ------------------------ General Rules ----------------------------
+  
+  Uppon connecting to this network, you are agreeing with the network
+  general information /motd /rules /botmotd & /opermotd and therefore 
+  being subject to them.
+  
+    Please take a moment to read /motd /rules /botmotd & /opermotd
+
+  -------------------------------------------------------------------
+
+

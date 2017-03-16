@@ -1,0 +1,101 @@
+
+Revised: 01/01/2017
+
+  Upon connecting to this network, you are agreeing with the network
+  general information /motd /rules /botmotd & /opermotd & therefore being subject to them.
+
+  Guidelines:
+  
+  The network & services are here to provide security and convenience for every user of the net. 
+  These services are to be treated with respect and shall not be used in an abusive or exploitive manner.
+
+  No member of this network will use services in such a manner as to intrude upon the privacy of 
+  registered channels or network users except for normal actions as required in the day-to-day operation
+  of the network. Therefore other than explaining how to use these services and assisting with all 
+  technical information related to the use of the network and information regarding the specifics of 
+  those questions, do not involve the adminstration and/or operators.
+
+  Connection Logs:
+
+  Due to storage space limitations there are no permanent records of connections or users' IP address 
+  information. Realtime connection monitoring is routine practice so that we can see malicious clients 
+  when they connect, but those logs are volatile. Once they are gone, they are gone. What this means 
+  is that we “see” your connection, including nickname and IP address when you connect, but it is not 
+  recorded or saved by our servers or services. 
+ 
+  Chat Logs:
+
+  For everyone safety and privacy, chat logs are forbbiden in this network and under NO circumstance do 
+  we view any channel activity.
+  The IRCd we use has no capability of logging private discussion,nor does our services nor we would ever 
+  allow it. Along with being  highly unethical, this could also be illegal under wiretap laws of various 
+  jurisdictions our network is involved in. In order to ensure your privacy we REQUEST you to use any of 
+  the avaliable cryptography technologies like OTR, Blowfish, SSL, GNUTLS, OpenPGP, RSA 4096, cryptosetup, 
+  LUKS or better.
+  Please understand that if you make logs, anyone that gets access to your logs, will be compromised by 
+  you, the weakest link!
+  
+  User Information:
+
+  Information supplied by the user for the purpose of registering their nickname or channel is stored in 
+  a database for the lifetime of that nickname or channel. If the nick or channel is deleted, or expires or
+  is otherwise removed from our databases, all relevant information is deleted as well. We take absolutely 
+  no steps to verify the accuracy or validity of information provided by users for the purposes of 
+  registration, and IP address is not included.
+
+  Cryptography:
+
+  You are required to ENSURE the use of cryptography technologies like OTR, Blowfish, SSL, GNUTLS, OpenPGP,
+  RSA 4096, cryptosetup, LUKS and Tor or better to protect your comunications. Failing to do so will get
+  your privileged access in the network revoked.
+  Cryptography is mandatory in the network. We do not want to hear about what you talk about.
+
+  Privacy:
+
+  Under NO circumstances will our network provide email, IP address, or other private user information to
+  anyone with anything less than a court order to do so. If you follow the required cryptography and 
+  annonimacy along with the facts that no logs are to be made, the network will never have anything to show 
+  or be accountable for.
+  Also and although under NO circumstance will network staff eavesdrop on a channel or private message.
+  You are requested to encrypt channels and/or private messages to ensure that in the event of a take over 
+  by malicious actors from anywhere, that they would never be able to read any of your comunications.
+
+  Bots Policy:
+
+  If you wish to bring a bot to the network, friendly eggdrops may be allowed but you must inform the 
+  administration of their presence.
+  Malicious bots will NOT be tolerated on our network and will be removed, blocked and or banned permently 
+  along with their owners.
+  Bots must be set with mode +B. Eggdrop example: set init-server { putserv "MODE $botnick +iB -ws" }
+
+  Spamming:
+
+  Any user found joining this network for the purpose of mass messaging users or channels, illegal activites 
+  or spamming in any way shape or form will be removed from our network without previous warnings.
+
+  Abusive Behaviour:
+
+  When connected to the network you are expected to respect it's staff as well as all networks' users. 
+  Abusive behaviour towards any users or staff will not be tolerated and disciplinary action will be taken.
+
+  Illegal activity: 
+
+  Illegal activity in the network is forbbiden. If we are aware of it, you will be permanently banned.
+
+  Terrorism:
+
+  If we suspect any use of the network for terrorism purposes, you will be terminated!
+  
+
+  Technical abuse to the network:
+ 
+  DDOS: We will shutdown, change ips and domains as needed, whitelist good users to temporary servers and will 
+        send your subnets and or full contry of origin to /dev/null.
+        
+  Misconfiguration: Misconfigured and or unsuported software that keeps hammering the network, will be banned 
+                    by ip, subnet geo location, region and or country as needed, while good users will be 
+                    permited by whitelist.
+
+  Bans/glines/etc:  When warranted, we will do it by ip, subnet, geo location, region and or country. 
+                    We don't care about any consequences and will get you out.
+
