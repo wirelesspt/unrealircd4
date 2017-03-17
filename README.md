@@ -1,1 +1,1 @@
-# unrealircd4 wirelesspt.net setup
+# UnrealIRCD 4 WirelessPT.net Setup
