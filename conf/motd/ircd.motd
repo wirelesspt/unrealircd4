@@ -39,13 +39,13 @@ Revised: 01/01/2017
 
                      Need help ? Type: /join #Help
 
-  Information:     /motd           |    Server rules:      /rules
-  Channels list:   /list           |    Operators list:    /stats o       
+  Information:     /motd           |    Server rules:	   /rules
+  Channels list:   /list           |    Operators list:    /stats o
   Help system:     /helpop         |    Default Vhosts:    /stats V
-  Block PMs:       /mode nick +D   |    Official channels: /stats j
+  Administrator:   /admin          |    Official channels: /stats j
   Block invites:   /mode nick +N   |    Server functions:  /cap
-  Network staff:   /staff          |    Active Ircops:     /ircops
-  Administrator:   /admin          |    
+  Block ALL PMs:   /mode nick +D   |    Network staff:     /staff
+  Whitelist PMs:   /pmhelp   (+P)  |    Active Ircops:     /ircops
 
   -------------------------------------------------------------------
 
