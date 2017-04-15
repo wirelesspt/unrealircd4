@@ -50,12 +50,12 @@ int umode_allow_secure(aClient *sptr, int what) {
 }
 
 char *securequery_checkmsg(aClient *sptr, aClient *acptr, char *text, int notice) {
-	if((acptr->umodes & UMODE_SECUREQUERY) && !IsULine(sptr) && !IsServer(sptr) && !(sptr->umodes & UMODE_SECURE)) {
-		sendnotice(sptr, "Message to '%s' not delivered: User does not accept private messages or notices from non-SSL users. Please login to the server securely using SSL or TLS.", acptr->name);
+	if((acptr->umodes & UMODE_SECUREQUERY) && !IsULine(sptr) && !IsServer(sptr) && !IsMe(sptr) && !(sptr->umodes & UMODE_SECURE)) {
+		sendnotice(sptr, "Message to '%s' not delivered: User does not accept private messages or notices from non-SSL users.", acptr->name);
 		return NULL;
 	}
-	else if((sptr->umodes & UMODE_SECUREQUERY) && !IsULine(acptr) && !IsServer(acptr) && !(acptr->umodes & UMODE_SECURE)) {
-		sendnotice(sptr, "Message to '%s' not delivered: For your security, your modes do not allow you to send private messages or notices to non-SSL users.", acptr->name);
+	else if((sptr->umodes & UMODE_SECUREQUERY) && !IsULine(acptr) && !IsServer(acptr) && !IsMe(sptr) && !(acptr->umodes & UMODE_SECURE)) {
+		sendnotice(sptr, "Message to '%s' not delivered: Your modes do not allow you to send private messages or notices to non-SSL users.", acptr->name);
 		return NULL;
 	}
 

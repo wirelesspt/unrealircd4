@@ -21,7 +21,7 @@ Cmdoverride *noInvOVR; // Pointer to the override we're gonna add
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_noinvite) = {
 	"m_noinvite", // Module name
-	"$Id: v1.0 2017/03/11 Gottem$", // Version
+	"$Id: v1.01 2017/03/20 Gottem$", // Version
 	"Adds umode +N to block invites", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -59,10 +59,11 @@ MOD_UNLOAD(m_noinvite) {
 // Now for the actual override
 static int noinvite_override_invite(Cmdoverride *ovr, aClient *cptr, aClient *sptr, int parc, char *parv[]) {
 	aClient *acptr;
-	if(!BadPtr(parv[1]) && (acptr = find_person(parv[1], NULL)) && (acptr->umodes & noinvite_extumode)) {
-		if(!BadPtr(parv[2]) && find_channel(parv[2], NULL))
+	if(!IsOper(sptr) && !BadPtr(parv[1]) && (acptr = find_person(parv[1], NULL)) && (acptr->umodes & noinvite_extumode)) {
+		if(!BadPtr(parv[2]) && find_channel(parv[2], NULL)) {
 			sendto_one(sptr, ":%s NOTICE %s :%s has blocked all invites", me.name, parv[2], parv[1]);
-		return 0;
+			return 0;
+		}
 	}
 	return CallCmdoverride(ovr, cptr, sptr, parc, parv); // Run original function yo
 }

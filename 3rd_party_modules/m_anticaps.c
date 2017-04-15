@@ -196,7 +196,7 @@ static int anticaps_override(Cmdoverride *ovr, aClient *cptr, aClient *sptr, int
 	int perc; // Store percentage etc
 	int i, len, caps; // To count full length as well as caps
 
-	if(BadPtr(parv[1]) || BadPtr(parv[2]) || !sptr || IsULine(sptr) || IsServer(sptr) || IsOper(sptr) || strlen(parv[2]) < minLength)
+	if(BadPtr(parv[1]) || BadPtr(parv[2]) || !sptr || IsULine(sptr) || IsServer(sptr) || IsMe(sptr) || IsOper(sptr) || strlen(parv[2]) < minLength)
 		return CallCmdoverride(ovr, cptr, sptr, parc, parv); // Run original function yo
 
 	plaintext = (char *)StripControlCodes(StripColors(parv[2])); // Some shitty ass scripts may use colours/markup, so fuck that

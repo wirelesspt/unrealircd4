@@ -93,7 +93,7 @@ CMD_FUNC(m_clones) {
 		return dumpit(sptr, clones_halp);
 
 	if(IsParam(2)) {
-		if(hunt_server(cptr, sptr, MSG_CLONES, 2, parc, parv) != HUNTED_ISME)
+		if(hunt_server(cptr, sptr, ":%s CLONES %s %s", 2, parc, parv) != HUNTED_ISME)
 			return 0;
 	}
 

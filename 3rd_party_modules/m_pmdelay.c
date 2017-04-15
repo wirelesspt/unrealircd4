@@ -76,7 +76,7 @@ char *pmdelay_hook_preusermsg(aClient *sptr, aClient *to, char *text, int notice
 	** notice: Should be obvious ;];]
 	*/
 	// Let's allow opers/servers/U:Lines to always send, also from anyone TO U:Lines (muh /ns identify lol)
-	if(!IsServer(sptr) && !IsOper(sptr) && !IsULine(sptr) && !IsULine(to)) {
+	if(!IsServer(sptr) && !IsMe(sptr) && !IsOper(sptr) && !IsULine(sptr) && !IsULine(to)) {
 		// Sanity check + delay check =]
 		if(sptr->local && TStime() - sptr->local->firsttime < muhDelay) {
 			sendnotice(sptr, "You have to be connected for at least %d seconds before sending private messages", muhDelay);
@@ -146,6 +146,6 @@ int pmdelay_configrun(ConfigFile *cf, ConfigEntry *ce, int type) {
 
 int pmdelay_rehash(void) {
 	// Reset config defaults
-	muhDelay = 10;
+	muhDelay = 60;
 	return HOOK_CONTINUE;
 }

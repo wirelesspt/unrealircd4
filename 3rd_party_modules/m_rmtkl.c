@@ -15,7 +15,7 @@ CMD_FUNC(m_rmtkl); // Register command function
 
 ModuleHeader MOD_HEADER(m_rmtkl) = {
 	"m_rmtkl",
-	"$Id: v1.21 2017/01/31 Gottem$",
+	"$Id: v1.22 2017/04/04 Gottem$",
 	"Adds /rmtkl command to easily remove *:Lines in bulk",
 	"3.2-b8-1",
 	NULL
@@ -86,8 +86,8 @@ static char *rmtkl_help[] = {
 	"Syntax:",
 	"    /rmtkl type user@host [comment] [-skipperm]",
 	"The type field may contain any number of the following characters:",
-	"    K, z, G, Z, q, Q, f, F and *",
-	"    (asterisk includes every types but q, Q, f and F).",
+	"    K, z, G, Z, q, Q, F and *",
+	"    (asterisk includes every types but q, Q and F).",
 	"The user@host field is a wildcard mask to match an user@host which",
         "    a ban was set on.",
 	"The comment field is also wildcard mask that you can match the",
@@ -122,7 +122,6 @@ TKLType tkl_types[] = {
 	{ TKL_SHUN | TKL_GLOBAL, 's', "Shun", "tkl:shun:remove" },
 	{ TKL_NICK, 'q', "Q:Line", "tkl:qline:local:remove" },
 	{ TKL_NICK | TKL_GLOBAL, 'Q', "Global Q:Line", "tkl:qline:remove" },
-	{ TKL_SPAMF, 'f', "Spamfilter", "tkl:spamfilter:local:remove" },
 	{ TKL_SPAMF | TKL_GLOBAL, 'F', "Global Spamfilter", "tkl:spamfilter:remove" },
 	{ 0, 0, "Unknown *:Line", 0 },
 };
@@ -182,6 +181,16 @@ aTKline *_my_tkl_del_line(aTKline *tkl) {
  */
 
 CMD_FUNC(m_rmtkl) {
+	/* Gets args: aClient *cptr, aClient *sptr, int parc, char[] parv
+	**
+	** cptr: Pointer to directly attached client -- if remote user this is the remote server instead
+	** sptr: Pointer to user executing command -- you'll probably wanna use this fam
+	** parc: Amount of arguments (also includes the command in the count)
+	** parv: Contains the actual args, first one starts at parv[1]
+	**
+	** So "RMTKL test" would result in parc = 2 and parv[1] = "test"
+	** Also, parv[0] seems to always be NULL, so better not rely on it fam
+	*/
 	aTKline *tk, *next = NULL;
 	TKLType *tkltype;
 	char *types, *uhmask, *cmask, *p, *rawnick;
@@ -216,7 +225,7 @@ CMD_FUNC(m_rmtkl) {
 			skipperm = 1;
 	}
 
-	/* I don't add q, Q, f and F here. They are different. */
+	/* I don't add q, Q and F here. They are different. */
 	if(strchr(types, '*'))
 		types = "KzGZs";
 
@@ -298,8 +307,8 @@ CMD_FUNC(m_rmtkl) {
 
 			// Also spamfilters =]
 			else if(tk->type & TKL_SPAMF) {
-				// Skip default spamfilters and ones added through configs (these are set by the hub usually)
-				if(!strchr(tk->setby, '@'))
+				// Skip default spamfilters and ones added through configs
+				if(flag == 'f') // Cuz apparently 'f' means it was added through the conf or is built-in ('F' is ok tho)
 					continue;
 
 				sendto_snomask(SNO_TKL, "%s removed %s [%s] %s (set at %s " "- reason: %s)", sptr->name, tkltype->txt, banact_valtostring(tk->ptr.spamf->action) ?: "<unknown>", tk->reason, gmt ?: "<unknown>", tk->ptr.spamf->tkl_reason);
@@ -314,13 +323,15 @@ CMD_FUNC(m_rmtkl) {
 				ircd_log(LOG_TKL, "%s removed %s %s@%s (set at %s - reason: %s)", sptr->name, tkltype->txt, tk->usermask, tk->hostmask, gmt ?: "<unknown>", tk->reason);
 			}
 
+			RunHook5(HOOKTYPE_TKL_DEL, cptr, sptr, tk, NULL, NULL); // Run hooks lol
+
 			// If this is a global *:Line, let's pass it on to other servers, shall we? =]
 			if(tk->type & TKL_GLOBAL) {
 				rawnick = make_nick_user_host(sptr->name, sptr->user->username, GetHost(sptr)); // Unreal requires a "by" argument (like, who undid it)
 
 				// Muh spamfilter format
 				if(tk->type & TKL_SPAMF)
-					sendto_server(&me, 0, 0, ":%s TKL - %c %s %c %s %d %d :%s", me.name, flag, spamfilter_target_inttostring(tk->subtype), banact_valtochar(tk->ptr.spamf->action), rawnick, (tk->expire_at != 0) ? (tk->expire_at - curtime) : 0, curtime - tk->set_at, tk->reason);
+					sendto_server(&me, 0, 0, ":%s TKL - %c %s %c %s %li %li :%s", me.name, flag, spamfilter_target_inttostring(tk->subtype), banact_valtochar(tk->ptr.spamf->action), rawnick, (tk->expire_at != 0) ? (tk->expire_at - curtime) : 0, curtime - tk->set_at, tk->reason);
 
 				else
 					sendto_server(&me, 0, 0, ":%s TKL - %c %s %s %s", me.name, flag, tk->usermask, tk->hostmask, rawnick);
