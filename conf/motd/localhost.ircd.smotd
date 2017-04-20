@@ -35,7 +35,7 @@ Revised: 01/01/2017
 
                      Need help ? Type: /join #Help
 
-  Information:     /motd           |    Server rules:	   /rules
+  Information:     /motd           |    Server rules:      /rules
   Channels list:   /list           |    Operators list:    /stats o
   Help system:     /helpop         |    Default Vhosts:    /stats V
   Administrator:   /admin          |    Official channels: /stats j
