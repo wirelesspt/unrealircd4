@@ -27,8 +27,8 @@ Revised: 01/01/2017
 
   For everyone safety and privacy, chat logs are forbbiden in this network and under NO circumstance do 
   we view any channel activity.
-  The IRCd we use has no capability of logging private discussion,nor does our services nor we would ever 
-  allow it. Along with being  highly unethical, this could also be illegal under wiretap laws of various 
+  The IRCd we use has no capability of logging private discussion, nor does our services nor we would ever 
+  allow it. Along with being highly unethical, this could also be illegal under wiretap laws of various 
   jurisdictions our network is involved in. In order to ensure your privacy we REQUEST you to use any of 
   the avaliable cryptography technologies like OTR, Blowfish, SSL, GNUTLS, OpenPGP, RSA 4096, cryptosetup, 
   LUKS or better.
@@ -66,7 +66,7 @@ Revised: 01/01/2017
   administration of their presence.
   Malicious bots will NOT be tolerated on our network and will be removed, blocked and or banned permently 
   along with their owners.
-  Bots must be set with mode +B. Eggdrop example: set init-server { putserv "MODE $botnick +iB -ws" }
+  Bots must be set with mode +B. Eggdrop example: set init-server { putserv "MODE $botnick +BiT -ws" }
 
   Spamming:
 
@@ -90,7 +90,7 @@ Revised: 01/01/2017
   Technical abuse to the network:
  
   DDOS: We will shutdown, change ips and domains as needed, whitelist good users to temporary servers and will 
-        send your subnets and or full contry of origin to /dev/null.
+        send your subnets and or full country of origin to /dev/null.
         
   Misconfiguration: Misconfigured and or unsuported software that keeps hammering the network, will be banned 
                     by ip, subnet geo location, region and or country as needed, while good users will be 
