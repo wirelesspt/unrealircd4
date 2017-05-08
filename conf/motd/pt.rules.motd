@@ -27,8 +27,8 @@ Revised: 01/01/2017
 
   For everyone safety and privacy, chat logs are forbbiden in this network and under NO circumstance do 
   we view any channel activity.
-  The IRCd we use has no capability of logging private discussion,nor does our services nor we would ever 
-  allow it. Along with being  highly unethical, this could also be illegal under wiretap laws of various 
+  The IRCd we use has no capability of logging private discussion, nor does our services nor we would ever 
+  allow it. Along with being highly unethical, this could also be illegal under wiretap laws of various 
   jurisdictions our network is involved in. In order to ensure your privacy we REQUEST you to use any of 
   the avaliable cryptography technologies like OTR, Blowfish, SSL, GNUTLS, OpenPGP, RSA 4096, cryptosetup, 
   LUKS or better.

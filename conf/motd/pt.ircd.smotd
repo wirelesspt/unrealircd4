@@ -37,12 +37,12 @@ Revised: 01/01/2017
                 Precisas de ajuda ? Digita: /join #Help
 
   Informação:       /motd          |  Regras do servidor:  /rules
-  Lista de canais   /list          |  Lista de operadores: /stats o
+  Lista de canais   /list          |  Funções do servidor: /cap
   Sistema de ajuda: /helpop        |  Vhost genérico:      /stats V
   Administrador:    /admin         |  Canais oficiais:     /stats j
-  Bloquear invites: /mode nick +N  |  Funções do servidor: /cap
+  Bloquear invites: /mode nick +N  |  Ircops activos:      /ircops
   Bloquear PVT:     /mode nick +D  |  Pessoal da rede:     /staff
-  Priveligiar PVT:  /pmhelp   (+P) |  Ircops activos:      /ircops
+  Priveligiar PVT:  /pmhelp   (+P) |
 
   -------------------------------------------------------------------
 
