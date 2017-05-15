@@ -30,7 +30,7 @@ Revised: 01/01/2017
                    l6xsibhkdrsdwm53.onion   Port: 6697   IP max: 5
 
   Cryptography:    OTR, Blowfish, SSL, GNUTLS, OpenPGP, RSA 4096,
-                   Cryptosetup, LUKS, Tor
+                   Cryptosetup, LUKS, Sasl, Tor
 
   Privacy:         For your privacy we set you the modes: Tsipxz
   Generic Vhost:   Type: /vhost network vhost

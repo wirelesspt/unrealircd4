@@ -28,7 +28,7 @@ Revised: 01/01/2017
 
 
   Criptografia:    OTR, Blowfish, SSL, GNUTLS, OpenPGP, RSA 4096,
-                   Cryptosetup, LUKS, Tor
+                   Cryptosetup, LUKS, Sasl, Tor
 
   Privacidade:     Para a tua privacidade forçamos os modos: Tsipxz
   Vhost geral:     Digita: /vhost network vhost

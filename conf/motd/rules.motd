@@ -31,7 +31,7 @@ Revised: 01/01/2017
   allow it. Along with being highly unethical, this could also be illegal under wiretap laws of various 
   jurisdictions our network is involved in. In order to ensure your privacy we REQUEST you to use any of 
   the avaliable cryptography technologies like OTR, Blowfish, SSL, GNUTLS, OpenPGP, RSA 4096, cryptosetup, 
-  LUKS or better.
+  LUKS, CertFP, Sasl, Tor or better.
   Please understand that if you make logs, anyone that gets access to your logs, will be compromised by 
   you, the weakest link!
   
@@ -46,8 +46,8 @@ Revised: 01/01/2017
   Cryptography:
 
   You are required to ENSURE the use of cryptography technologies like OTR, Blowfish, SSL, GNUTLS, OpenPGP,
-  RSA 4096, cryptosetup, LUKS and Tor or better to protect your comunications. Failing to do so will get
-  your privileged access in the network revoked.
+  RSA 4096, cryptosetup, LUKS, CertFP, Sasl, Tor or better to protect your comunications. Failing to do so will 
+  get your privileged access in the network revoked.
   Cryptography is mandatory in the network. We do not want to hear about what you talk about.
 
   Privacy:
@@ -90,7 +90,7 @@ Revised: 01/01/2017
   Technical abuse to the network:
  
   DDOS: We will shutdown, change ips and domains as needed, whitelist good users to temporary servers and will 
-        send your subnets and or full country of origin to /dev/null.
+        send your subnets and or full contry of origin to /dev/null.
         
   Misconfiguration: Misconfigured and or unsuported software that keeps hammering the network, will be banned 
                     by ip, subnet geo location, region and or country as needed, while good users will be 
