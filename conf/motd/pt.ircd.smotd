@@ -1,48 +1,5 @@
 
-Revised: 01/01/2017
-
-       __________  ____________________  _______   ____ __ __________
-      / ____/ __ \/ ____/ ____/_  __/ / / /  _/ | / / //_// ____/ __ \
-     / /_  / /_/ / __/ / __/   / / / /_/ // //  |/ / ,<  / __/ / /_/ /
-    / __/ / _, _/ /___/ /___  / / / __  // // /|  / /| |/ /___/ _, _/
-   /_/   /_/ |_/_____/_____/ /_/ /_/ /_/___/_/ |_/_/ |_/_____/_/ |_|
-
-   _       _  _  ___    ___    _      ___    ___    ___    ___   _____
-  ( )  _  ( )(_)|  _`\ (  _`\ ( )    (  _`\ (  _`\ (  _`\ (  _`\(_   _)
-  | | ( ) | || || (_) )| (_(_)| |    | (_(_)| (_(_)| (_(_)| |_) ) | |
-  | | | | | || || ,  / |  _)_ | |  _ |  _)_ `\__ \ `\__ \ | ,__/' | |
-  | (_/ \_) || || |\ \ | (_( )| |_( )| (_( )( )_) |( )_) || |     | |
-  `\___x___/'(_)(_) (_)(____/'(____/'(____/'`\____)`\____)(_)     (_)
-
-                         Fundada a 15/02/2009
-
-  -------------------------------------------------------------------
-
-  Administrador:   suporte@wirelesspt.net
-
-  Chave pública:   http://wirelesspt.net/arquivos/pk
-  Website:         http://wirelesspt.net/wiki/irc
-
-  Endereços:      irc.wirelesspt.net       Port: 6697   IP max: 5
-                  l6xsibhkdrsdwm53.onion   Port: 6697   IP max: 5
-
-  Criptografia:    OTR, Blowfish, SSL, GNUTLS, OpenPGP, RSA 4096,
-                   Cryptosetup, LUKS, Sasl, Tor
-
-  Privacidade:     Para a tua privacidade forçamos os modos: Tsipxz
-  Vhost geral:     Digita: /vhost network vhost
-
-  -------------------------------------------------------------------
-
-                Precisas de ajuda ? Digita: /join #Help
-
-  Informação:       /motd          |  Regras do servidor:  /rules
-  Lista de canais   /list          |  Funções do servidor: /cap
-  Sistema de ajuda: /helpop        |  Vhost genérico:      /stats V
-  Administrador:    /admin         |  Canais oficiais:     /stats j
-  Bloquear invites: /mode nick +N  |  Ircops activos:      /ircops
-  Bloquear PVT:     /mode nick +D  |  Pessoal da rede:     /staff
-  Priveligiar PVT:  /pmhelp   (+P) |
+Revisto: 16/05/2016
 
   -------------------------------------------------------------------
 
@@ -59,4 +16,17 @@ Revised: 01/01/2017
      Recomenda-se a leitura do /motd /rules /botmotd & /opermotd
 
   --------------------------------------------------------------------
+
+                Precisas de ajuda ? Digita: /join #Help
+
+  Sobre o servidor:    /admin     |   Bloquear invites: /mode nick +N
+  Sobre a rede:        /motd      |   Bloquear PVT:     /mode nick +D
+  Regras do servidor:  /rules     |   Priveligiar PVT:  /pmhelp   (+P)
+  Canais oficiais:     /stats j   |   Ircops activos:   /ircops
+  Sistema de ajuda:    /helpop    |   Vhost genérico:  /stats V
+  Funções do servidor: /cap     |
+
+          Para saber mais sobre este servidor digita: /admin
+
+  -------------------------------------------------------------------
 

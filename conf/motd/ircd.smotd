@@ -1,51 +1,5 @@
 
-Revised: 01/01/2017
-
-       __________  ____________________  _______   ____ __ __________ 
-      / ____/ __ \/ ____/ ____/_  __/ / / /  _/ | / / //_// ____/ __ \
-     / /_  / /_/ / __/ / __/   / / / /_/ // //  |/ / ,<  / __/ / /_/ /
-    / __/ / _, _/ /___/ /___  / / / __  // // /|  / /| |/ /___/ _, _/
-   /_/   /_/ |_/_____/_____/ /_/ /_/ /_/___/_/ |_/_/ |_/_____/_/ |_|
-
-   _       _  _  ___    ___    _      ___    ___    ___    ___   _____  
-  ( )  _  ( )(_)|  _`\ (  _`\ ( )    (  _`\ (  _`\ (  _`\ (  _`\(_   _)
-  | | ( ) | || || (_) )| (_(_)| |    | (_(_)| (_(_)| (_(_)| |_) ) | |
-  | | | | | || || ,  / |  _)_ | |  _ |  _)_ `\__ \ `\__ \ | ,__/' | |
-  | (_/ \_) || || |\ \ | (_( )| |_( )| (_( )( )_) |( )_) || |     | |
-  `\___x___/'(_)(_) (_)(____/'(____/'(____/'`\____)`\____)(_)     (_)
-
-                         Founded a 15/02/2009
-
-  -------------------------------------------------------------------
-
-  Admin Contact:   support@wirelesspt.net
-
-  Public key:      http://wirelesspt.net/arquivos/pk
-                   http://pbmr3mbkuljnd25q.onion/arquivos/pk
-
-  Website:         http://wirelesspt.net/wiki/irc
-                   http://pbmr3mbkuljnd25q.onion/wiki/irc
-
-  Addresses:       irc.wirelesspt.net       Port: 6697   IP max: 5
-                   l6xsibhkdrsdwm53.onion   Port: 6697   IP max: 5
-
-  Cryptography:    OTR, Blowfish, SSL, GNUTLS, OpenPGP, RSA 4096,
-                   Cryptosetup, LUKS, Sasl, Tor
-
-  Privacy:         For your privacy we set you the modes: Tsipxz
-  Generic Vhost:   Type: /vhost network vhost
-
-  -------------------------------------------------------------------
-
-                     Need help ? Type: /join #Help
-
-  Information:     /motd           |    Server rules:	   /rules
-  Channels list:   /list           |    Server functions:  /cap    
-  Help system:     /helpop         |    Default Vhosts:    /stats V
-  Administrator:   /admin          |    Official channels: /stats j
-  Block invites:   /mode nick +N   |    Active Ircops:     /ircops
-  Block ALL PMs:   /mode nick +D   |    Network staff:     /staff
-  Whitelist PMs:   /pmhelp   (+P)  |
+Revised: 16/05/2017
 
   -------------------------------------------------------------------
 
@@ -60,6 +14,20 @@ Revised: 01/01/2017
   being subject to them.
   
     Please take a moment to read /motd /rules /botmotd & /opermotd
+
+  -------------------------------------------------------------------
+
+                     Need help ? Type: /join #Help
+
+  Server info:       /admin       |    Block invites:  /mode nick +N
+  Network info:      /motd        |    Block ALL PMs:  /mode nick +D 
+  Server rules:      /rules       |    Whitelist PMs:  /pmhelp   (+P)
+  Official channels: /stats j     |    Active Ircops:  /ircops
+  Channels list:     /list        |    Network staff:  /staff
+  Help system:       /helpop      |    Default Vhosts: /stats V
+  Server functions:  /cap         |
+
+                For this server information type: /admin
 
   -------------------------------------------------------------------
 
