@@ -60,10 +60,10 @@ int TLC; // A counter for T:Lines so we can change the moddata back to NULL
 // Help string in case someone does just /TEXTSHUN
 static char *muhhalp[] = {
 	/* Special characters:
-	** STX = bold -- \x02
-	** US = underlined -- \x1F
+	** \002 = bold -- \x02
+	** \037 = underlined -- \x1F
 	*/
-	"*** Help on /TEXTSHUN ***",
+	"*** \002Help on /TEXTSHUN\002 ***",
 	"Enables opers to drop messages based on nick and body regexes (T:Lines).",
 	"It only supports (PCRE) regexes because regular wildcards seem",
 	"ineffective to me. ;] Also, you can't have spaces so you",
@@ -74,17 +74,17 @@ static char *muhhalp[] = {
 	"The nick regex is matched against both n!u@realhost and n!u@vhost masks.",
 	" ",
 	"Syntax:",
-	"    /TEXTSHUN ADD/DEL nickrgx bodyrgx [expiration] reason",
+	"    \002/TEXTSHUN\002 \037ADD/DEL\037 \037nickrgx\037 \037bodyrgx\037 [\037expiration\037] \037reason\037",
 	" ",
 	"Examples:",
-	"    /tline add guest.+ h[o0]+m[o0]+ 0 nope",
-	"    /textshun add guest.+ h[o0]+m[o0]+ nope",
-	"    /ts del guest.+ h[o0]+m[o0]+",
+	"    \002/tline add guest.+ h[o0]+m[o0]+ 0 nope\002",
+	"    \002/textshun add guest.+ h[o0]+m[o0]+ nope\002",
+	"    \002/ts del guest.+ h[o0]+m[o0]+\002",
 	"        Adds/deletes the same T:Line, with no expiration",
-	"    /tline add guest.+ h[o0]+m[o0]+ 3600 ain't gonna happen",
-	"    /tline add guest.+ h[o0]+m[o0]+ 1h ain't gonna happen",
+	"    \002/tline add guest.+ h[o0]+m[o0]+ 3600 ain't gonna happen\002",
+	"    \002/tline add guest.+ h[o0]+m[o0]+ 1h ain't gonna happen\002",
 	"        Add a T:Line that expires in an hour",
-	"    /tline",
+	"    \002/tline\002",
 	"        Show all T:Lines",
 	NULL
 };

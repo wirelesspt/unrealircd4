@@ -56,14 +56,14 @@ static int dumpit(aClient *sptr, char **p) {
 }
 
 static char *clones_halp[] = {
-	"*** Help on /clones ***",
+	"*** \002Help on /clones\002 ***",
 	"Gives you a list of clones based on the specified options.",
 	"Clones are listed by a nickname or by a minimal number of",
 	"concurrent sessions connecting from the local or the given",
 	"server.",
 	" ",
 	"Syntax:",
-	"CLONES <min-num-of-sessions|nickname> [server]",
+	"CLONES <\037min-num-of-sessions|nickname\037> [\037server\037]",
 	" ",
 	"Examples:",
 	"  /clones 2",

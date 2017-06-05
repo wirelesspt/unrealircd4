@@ -79,27 +79,27 @@ static int dumpit(aClient *sptr, char **p) {
 /* Help for /rmtkl command */
 
 static char *rmtkl_help[] = {
-	"*** Help on /rmtkl *** ",
+	"*** \002Help on /rmtkl\002 *** ",
 	"COMMAND - Removes all TKLs matching the given conditions from the",
 	"local server or the IRC Network depending on it's a global ban or not.",
 	"With this command you can remove any type of TKLs.",
 	"Syntax:",
-	"    /rmtkl type user@host [comment] [-skipperm]",
-	"The type field may contain any number of the following characters:",
+	"    \002/rmtkl\002 \037type\037 \037user@host\037 [\037comment\037] [\037-skipperm\037]",
+	"The \037type\037 field may contain any number of the following characters:",
 	"    K, z, G, Z, q, Q, F and *",
 	"    (asterisk includes every types but q, Q and F).",
-	"The user@host field is a wildcard mask to match an user@host which",
+	"The \037user@host\037 field is a wildcard mask to match an user@host which",
         "    a ban was set on.",
-	"The comment field is also wildcard mask that you can match the",
+	"The \037comment\037 field is also wildcard mask that you can match the",
 	"    text of the reason for a ban.",
 	"Examples:",
-	"    - /rmtkl * *",
+	"    - \002/rmtkl * *\002",
 	"        [remove all TKLs but q and Q lines and spamfilters]",
-	"    - /rmtkl GZ *@*.mx * -skipperm",
+	"    - \002/rmtkl GZ *@*.mx\002 * -skipperm",
 	"        [remove all Mexican G/Z:Lines while skipping over permanent ones]",
-	"    - /rmtkl * * *Zombie*",
-	"        [remove all non-nick bans having Zombie in their reasons]",
-	"*** End of help ***",
+	"    - \002/rmtkl * * *Zombie*\002",
+	"        [remove all non-nick bans having \037Zombie\037 in their reasons]",
+	"*** \002End of help\002 ***",
 	NULL
 };
 

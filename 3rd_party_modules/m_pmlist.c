@@ -65,44 +65,44 @@ int noticeDelay = 60; // How many seconds to wait before sending another notice
 
 // Halp strings in case someone does just /<CMD>
 /* Special characters:
-** STX = bold -- \x02
-** US = underlined -- \x1F
+** \002 = bold -- \x02
+** \037 = underlined -- \x1F
 */
 static char *pmlistHalp[] = {
-	"*** Help on /OPENPM, /CLOSEPM, /PMLIST ***",
+	"*** \002Help on /OPENPM\002, \002/CLOSEPM\002, \002/PMLIST\002 ***",
 	"Keep a whitelist of people allowed to send you private messages.",
 	"Their UID is stored so it persists through nickchanges too.",
-	"Requires usermode +P to actually do something.",
+	"\002\037Requires usermode +P to actually do something.\037\002",
 	"If you set +P and privately message someone else, they will",
-	"automatically be added to your whitelist.",
+	"automatically be added to \037your\037 whitelist.",
 	"Stale entries (UID no longer exists on network) will be",
 	"automatically purged as well (as long as they're not persistent).",
 	" ",
 	"Syntax:",
-	"    /OPENPM nick [-persist]",
+	"    \002/OPENPM\002 \037nick\037 [\037-persist\037]",
 	"        Allow messages from the given user",
-	"        The argument must be an actual, existing nick",
+	"        The argument \037must be an actual, existing nick\037",
 	"        Also accepts -persist to keep an entry through",
 	"        reconnects. Requires the nick to be registered and",
 	"        logged into after they reconnect.",
-	"    /CLOSEPM nickmask",
+	"    \002/CLOSEPM\002 \037nickmask\037",
 	"        Clear matching entries from your list",
 	"        Supports wildcard matches too (* and ?)",
-	"    /PMLIST",
+	"    \002/PMLIST\002",
 	"        Display your current whitelist",
 	" ",
 	"Examples:",
-	"    /OPENPM guest8",
-	"    /OPENPM muhb0i -persist",
-	"    /CLOSEPM guest*",
-	"    /CLOSEPM *",
+	"    \002/OPENPM guest8\002",
+	"    \002/OPENPM muhb0i -persist\002",
+	"    \002/CLOSEPM guest*\002",
+	"    \002/CLOSEPM *\002",
 	NULL
 };
 
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_pmlist) = {
 	"m_pmlist", // Module name
-	"$Id: v1.04 2017/04/14 Gottem$", // Version
+	"$Id: v1.05 2017/05/01 Gottem$", // Version
 	"Implements umode +P to only allow only certain people to privately message you", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -214,6 +214,9 @@ char *pmlist_hook_preusermsg(aClient *sptr, aClient *to, char *text, int notice)
 	pmEntry *pm; // Dat entry fam
 
 	if(IsServerOrMe(sptr) || IsServerOrMe(to) || IsULine(sptr) || IsULine(to) || IsOper(sptr)) // Check for exclusions imo
+		return text;
+
+	if(!MyConnect(to)) // If the recipient is not on this server, we can't check _their_ pmlist anyways, so fuck off here =]
 		return text;
 
 	if(HasPMList(sptr) && !match_pmentry(sptr, to->id, to->name)) { // If YOU have +P and target is not on the list, add 'em
@@ -402,7 +405,7 @@ CMD_FUNC(m_openpm) {
 		pm->nick = strdup(acptr->name); // And current nick
 		pm->persist = persist; // Set persistence yo
 		add_pmentry(sptr, pm); // Add 'em lol
-		sendnotice(sptr, "[pmlist] Added %s to your whitelist", acptr->name); // Notify 'em
+		sendnotice(sptr, "[pmlist] Added %s to your whitelist%s", acptr->name, (persist ? ", persistently" : "")); // Notify 'em
 		return 0; // We good
 	}
 
@@ -430,7 +433,7 @@ CMD_FUNC(m_openpm) {
 	pm->nick = strdup(acptr->name); // And current nick
 	pm->persist = persist; // Set persistence yo
 	add_pmentry(sptr, pm); // Add 'em yo
-	sendnotice(sptr, "[pmlist] Added %s to your whitelist", acptr->name); // Notify 'em
+	sendnotice(sptr, "[pmlist] Added %s to your whitelist%s", acptr->name, (persist ? ", persistently" : "")); // Notify 'em
 	return 0; // All good
 }
 

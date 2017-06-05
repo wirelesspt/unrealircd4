@@ -72,7 +72,7 @@ MOD_INIT(m_storetkl) {
 	if(!(storetklMDI = findmoddata_byname("storetkl_inited", MODDATATYPE_CLIENT))) { // Attempt to find active moddata (like in case of a rehash)
 		ModDataInfo mreq; // No moddata, let's request that shit
 		memset(&mreq, 0, sizeof(mreq)); // Set 'em lol
-		mreq.type = MODDATATYPE_CLIENT; // Apply to users only (CLIENT actually includes servers but we'll disregard that =])
+		mreq.type = MODDATATYPE_CLIENT; // Apply to servers only (CLIENT actually includes clients but we'll disregard that =])
 		mreq.name = "storetkl_inited"; // Name it
 		mreq.free = storetkl_moddata_free; // Function to free 'em
 		mreq.serialize = NULL; // Shouldn't be necessary but let's =]
