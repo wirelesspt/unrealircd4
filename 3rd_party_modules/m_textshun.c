@@ -119,7 +119,7 @@ MOD_INIT(m_textshun) {
 	if(!(textshunMDI = findmoddata_byname("textshun_list", MODDATATYPE_CLIENT))) { // Attempt to find active moddata (like in case of a rehash)
 		ModDataInfo mreq; // No moddata, let's request that shit
 		memset(&mreq, 0, sizeof(mreq)); // Set 'em lol
-		mreq.type = MODDATATYPE_CLIENT; // Apply to users only (CLIENT actually includes servers but we'll disregard that =])
+		mreq.type = MODDATATYPE_CLIENT; // Apply to servers only (CLIENT actually includes users but we'll disregard that =])
 		mreq.name = "textshun_list"; // Name it
 		mreq.free = textshun_moddata_free; // Function to free 'em
 		mreq.serialize = NULL;
@@ -163,7 +163,6 @@ MOD_LOAD(m_textshun) {
 
 // Called on unload/rehash obv
 MOD_UNLOAD(m_textshun) {
-	TLine *TLineList;
 	// Attempt to unregister hewks and custom commands
 	DelHook(serverConnectHook);
 	DelHook(preChanMsgHook);
@@ -395,7 +394,7 @@ char *textshun_hook_preusermsg(aClient *sptr, aClient *to, char *text, int notic
 
 // Function for /TLINE etc
 CMD_FUNC(m_textshun) {
-	/* Gets args: aClient *cptr, aClient *sptr, int parc, char[] parv
+	/* Gets args: aClient *cptr, aClient *sptr, int parc, char *parv[]
 	**
 	** cptr: Pointer to directly attached client -- if remote user this is the remote server instead
 	** sptr: Pointer to user executing command -- you'll probably wanna use this fam

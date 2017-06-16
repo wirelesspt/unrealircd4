@@ -181,7 +181,7 @@ aTKline *_my_tkl_del_line(aTKline *tkl) {
  */
 
 CMD_FUNC(m_rmtkl) {
-	/* Gets args: aClient *cptr, aClient *sptr, int parc, char[] parv
+	/* Gets args: aClient *cptr, aClient *sptr, int parc, char *parv[]
 	**
 	** cptr: Pointer to directly attached client -- if remote user this is the remote server instead
 	** sptr: Pointer to user executing command -- you'll probably wanna use this fam

@@ -103,8 +103,8 @@ int anticaps_configtest(ConfigFile *cf, ConfigEntry *ce, int type, int *errs) {
 			if(limit <= 0 || limit > 100) {
 				config_error("%s:%i: %s::capslimit must be an integer from 1 to 100 (represents a percentage)", cep->ce_fileptr->cf_filename, cep->ce_varlinenum, MYCONF);
 				errors++;
-				continue;
 			}
+			continue;
 		}
 
 		if(!strcmp(cep->ce_varname, "minlength")) {
@@ -112,17 +112,18 @@ int anticaps_configtest(ConfigFile *cf, ConfigEntry *ce, int type, int *errs) {
 				if(!isdigit(cep->ce_vardata[i])) {
 					config_error("%s:%i: %s::minlength must be an integer of zero or larger m8", cep->ce_fileptr->cf_filename, cep->ce_varlinenum, MYCONF);
 					errors++; // Increment err0r count fam
-					continue;
+					break;
 				}
 			}
+			continue;
 		}
 
 		if(!strcmp(cep->ce_varname, "lowercase_it")) {
 			if(!cep->ce_vardata || (strcmp(cep->ce_vardata, "0") && strcmp(cep->ce_vardata, "1"))) {
 				config_error("%s:%i: %s::lowercase_it must be either 0 or 1 fam", cep->ce_fileptr->cf_filename, cep->ce_varlinenum, MYCONF);
 				errors++; // Increment err0r count fam
-				continue;
 			}
+			continue;
 		}
 	}
 

@@ -203,9 +203,10 @@ int repeatprot_configtest(ConfigFile *cf, ConfigEntry *ce, int type, int *errs) 
 				if(!isdigit(cep->ce_vardata[i])) {
 					config_error("%s:%i: repeatprot::threshold must be an integer of zero or larger m8", cep->ce_fileptr->cf_filename, cep->ce_varlinenum);
 					errors++; // Increment err0r count fam
-					continue;
+					break;
 				}
 			}
+			continue;
 		}
 
 		if(!strcmp(cep->ce_varname, "timespan")) {
@@ -213,8 +214,8 @@ int repeatprot_configtest(ConfigFile *cf, ConfigEntry *ce, int type, int *errs) 
 			if(!cep->ce_vardata || config_checkval(cep->ce_vardata, CFG_TIME) <= 0) {
 				config_error("%s:%i: repeatprot::timespan must be a time string like '7d10m' or simply '20'", cep->ce_fileptr->cf_filename, cep->ce_varlinenum);
 				errors++; // Increment err0r count fam
-				continue;
 			}
+			continue;
 		}
 
 		// Now check for the repeatprot::triggers bl0qq

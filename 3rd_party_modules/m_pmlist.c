@@ -360,7 +360,7 @@ CMD_FUNC(m_pmhalp) {
 }
 
 CMD_FUNC(m_openpm) {
-	/* Gets args: aClient *cptr, aClient *sptr, int parc, char[] parv
+	/* Gets args: aClient *cptr, aClient *sptr, int parc, char *parv[]
 	**
 	** cptr: Pointer to directly attached client -- if remote user this is the remote server instead
 	** sptr: Pointer to user executing command -- you'll probably wanna use this fam
@@ -567,8 +567,8 @@ int pmlist_configtest(ConfigFile *cf, ConfigEntry *ce, int type, int *errs) {
 			if(!cep->ce_vardata || (strcmp(cep->ce_vardata, "0") && strcmp(cep->ce_vardata, "1"))) {
 				config_error("%s:%i: %s::%s must be either 0 or 1 fam", cep->ce_fileptr->cf_filename, cep->ce_varlinenum, MYCONF, cep->ce_varname);
 				errors++; // Increment err0r count fam
-				continue;
 			}
+			continue;
 		}
 
 		if(!strcmp(cep->ce_varname, "noticedelay")) {
@@ -582,9 +582,10 @@ int pmlist_configtest(ConfigFile *cf, ConfigEntry *ce, int type, int *errs) {
 				if(!isdigit(cep->ce_vardata[i])) {
 					config_error("%s:%i: %s::%s must be an integer of zero or larger m8", cep->ce_fileptr->cf_filename, cep->ce_varlinenum, MYCONF, cep->ce_varname);
 					errors++; // Increment err0r count fam
-					continue;
+					break;
 				}
 			}
+			continue;
 		}
 	}
 

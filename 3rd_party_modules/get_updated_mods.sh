@@ -1,3 +1,4 @@
+rm -r old
 mkdir old
 mv *.c old /
 
