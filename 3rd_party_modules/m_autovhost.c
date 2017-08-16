@@ -13,6 +13,7 @@ struct t_vhostEntry {
 };
 
 // Quality fowod declarations
+char *replaceem(char *str, char *search, char *replace);
 int autovhost_configtest(ConfigFile *cf, ConfigEntry *ce, int type, int *errs);
 int autovhost_configposttest(int *errs);
 int autovhost_configrun(ConfigFile *cf, ConfigEntry *ce, int type);
@@ -26,7 +27,7 @@ int vhostCount = 0;
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_autovhost) = {
 	"m_autovhost", // Module name
-	"$Id: v1.02 2017/03/11 Gottem$", // Version
+	"$Id: v1.03 2017/08/10 Gottem$", // Version
 	"Apply vhosts at connect time based on users' raw nick formats or IPs", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -76,6 +77,34 @@ MOD_UNLOAD(m_autovhost) {
 	return MOD_SUCCESS; // We good
 }
 
+char *replaceem(char *str, char *search, char *replace) {
+	char *tok = NULL;
+	char *newstr = NULL;
+	char *oldstr = NULL;
+	char *head = NULL;
+
+	if(search == NULL || replace == NULL)
+		return str;
+
+	newstr = strdup(str);
+	head = newstr;
+	while((tok = strstr(head, search))) {
+		oldstr = newstr;
+		newstr = malloc(strlen(oldstr) - strlen(search) + strlen(replace) + 1);
+		if(newstr == NULL) {
+			free(oldstr);
+			return str;
+		}
+		memcpy(newstr, oldstr, tok - oldstr);
+		memcpy(newstr + (tok - oldstr), replace, strlen(replace));
+		memcpy(newstr + (tok - oldstr) + strlen(replace), tok + strlen(search), strlen(oldstr) - strlen(search) - (tok - oldstr));
+		memset(newstr + strlen(oldstr) - strlen(search) + strlen(replace), 0, 1);
+		head = newstr + (tok - oldstr) + strlen(replace);
+		free(oldstr);
+	}
+	return newstr;
+}
+
 int autovhost_configtest(ConfigFile *cf, ConfigEntry *ce, int type, int *errs) {
 	int errors = 0; // Error count
 	int i; // Iterat0r
@@ -115,7 +144,7 @@ int autovhost_configtest(ConfigFile *cf, ConfigEntry *ce, int type, int *errs) {
 		}
 
 		if(strchr(cep->ce_vardata, '@')) {
-			config_error("%s:%i: only use the hostname part for vhosts (%s)", cep->ce_fileptr->cf_filename, cep->ce_varlinenum, cep->ce_vardata); // Rep0t error
+			config_error("%s:%i: should only use the hostname part for vhosts (%s)", cep->ce_fileptr->cf_filename, cep->ce_varlinenum, cep->ce_vardata); // Rep0t error
 			errors++; // Increment err0r count fam
 			continue; // Next iteration imo tbh
 		}
@@ -196,21 +225,36 @@ int autovhost_connect(aClient *sptr) {
 		return HOOK_CONTINUE;
 
 	vhostEntry *vEntry;
+	char *newhost;
 	for(vEntry = vhostList; vEntry; vEntry = vEntry->next) {
 		// Check if the mask matches the user's full nick mask (with REAL host) or IP
 		if(!match(vEntry->mask, make_nick_user_host(sptr->name, sptr->user->username, sptr->user->realhost)) || !match(vEntry->mask, GetIP(sptr))) {
-			// Free cloakedhost first obv
-			memset(sptr->user->cloakedhost, '\0', sizeof(sptr->user->cloakedhost));
+			newhost = replaceem(vEntry->vhost, "$nick", sptr->name);
+			if(!valid_host(newhost)) { // Can't really do this earlier because of $nick etc ;];]
+				free(newhost);
+				break;
+			}
+
+			if(strlen(newhost) > HOSTLEN)
+				newhost[HOSTLEN] = '\0';
+
+			// Free cloakedhost first obv (so doing /umode -x doesn't revert this vhost ;])
+			if(*sptr->user->cloakedhost)
+				memset(sptr->user->cloakedhost, '\0', sizeof(sptr->user->cloakedhost));
 
 			// Also free virthost
 			if(sptr->user->virthost) {
 				MyFree(sptr->user->virthost);
 				sptr->user->virthost = NULL;
 			}
-			sendnotice(sptr, "*** Setting your cloaked host to %s", vEntry->vhost);
-			sptr->user->virthost = strdup(vEntry->vhost);
-			strncpy(sptr->user->cloakedhost, vEntry->vhost, sizeof(sptr->user->cloakedhost));
-			sendto_server(NULL, 0, 0, ":%s SETHOST %s", sptr->name, vEntry->vhost);
+
+			// Actually set the new one here
+			sendnotice(sptr, "*** Setting your cloaked host to %s", newhost);
+			sptr->user->virthost = strdup(newhost);
+			strncpy(sptr->user->cloakedhost, newhost, sizeof(sptr->user->cloakedhost));
+			sendto_server(NULL, 0, 0, ":%s SETHOST %s", sptr->name, newhost);
+
+			free(newhost);
 			break;
 		}
 	}

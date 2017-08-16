@@ -35,7 +35,7 @@ int repeatprot_configtest(ConfigFile *cf, ConfigEntry *ce, int type, int *errs);
 int repeatprot_configposttest(int *errs);
 int repeatprot_configrun(ConfigFile *cf, ConfigEntry *ce, int type);
 int repeatprot_rehash(void);
-int dropMessage(aClient *cptr, aClient *sptr);
+int dropMessage(aClient *cptr, aClient *sptr, char *cmd, char *msg);
 void blockIt(aClient *sptr);
 int doKill(aClient *cptr, aClient *sptr);
 void doXLine(char flag, aClient *sptr);
@@ -65,7 +65,7 @@ time_t trigTimespan = 0;
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_repeatprot) = {
 	"m_repeatprot", // Module name
-	"$Id: v1.23 2016/12/30 Gottem$", // Version
+	"$Id: v1.24 2017/07/13 Gottem$", // Version
 	"G(Z):Line/kill users (or block their messages) who spam through CTCP, INVITE, OPER, NOTICE and/or PRIVMSG", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -413,22 +413,43 @@ int repeatprot_rehash(void) {
 	return HOOK_CONTINUE;
 }
 
-int dropMessage(aClient *cptr, aClient *sptr) {
-	switch(tklAction) {
-		case 'b':
+int dropMessage(aClient *cptr, aClient *sptr, char *cmd, char *msg) {
+	int ret = 0; // Final return value imo tbh
+	int kill = 0, xline = 0; // Whether to kill or G/GZ:Line
+	char snomsg[BUFSIZE]; // Message to send to 0pers =]
+	ircsnprintf(snomsg, sizeof(snomsg), "*** [repeatprot] \037\002%s\002\037 flood from \002%s\002", cmd, sptr->name); // Initialise that shit with some basic inf0
+
+	switch(tklAction) { // Checkem action to apply
+		case 'b': // Block 'em
+			ircsnprintf(snomsg, sizeof(snomsg), "%s [action: \037block\037, body: %s]", snomsg, msg);
 			blockIt(sptr);
 			break;
-		case 'k':
-			return doKill(cptr, sptr);
-		case 'G':
-		case 'Z':
-			doXLine(tklAction, sptr);
-			return FLUSH_BUFFER;
-		default:
+		case 'k': // Kill pls
+			ircsnprintf(snomsg, sizeof(snomsg), "%s [action: \037kill\037, body: %s]", snomsg, msg);
+			kill = 1; // Delay the actual kill for a bit
+			break;
+		case 'G': // X:Lines
+		case 'Z': // y0
+			ircsnprintf(snomsg, sizeof(snomsg), "%s [action: \037%s:Line\037, body: %s]", snomsg, (tklAction == 'Z' ? "GZ" : "G"), msg);
+			xline = 1; // Delay the actual X:Line for a bit
+			break;
+		default: // Shouldn't happen kek (like, ever)
+			ircsnprintf(snomsg, sizeof(snomsg), "%s [UNKNOWN ACTION, body: %s]", snomsg, msg);
 			break;
 	}
 
-	return 0;
+	// Send snomasks before actually rip'ing the user (muh chronology pls)
+	sendto_snomask(SNO_EYES, "%s", snomsg); // Local opers
+	sendto_server(NULL, 0, 0, ":%s SENDSNO e :%s", me.name, snomsg); // Broadcast 'em familia
+
+	// Checkem delayed actions
+	if(kill)
+		ret = doKill(cptr, sptr);
+	else if(xline) {
+		doXLine(tklAction, sptr);
+		ret = FLUSH_BUFFER; // Don't forget this shit fambi
+	}
+	return ret;
 }
 
 void blockIt(aClient *sptr) {
@@ -496,6 +517,7 @@ static int repeatprot_override(Cmdoverride *ovr, aClient *cptr, aClient *sptr, i
 	** Also, parv[0] seems to always be NULL, so better not rely on it fam
 	*/
 	char *cmd; // One override function for multiple commands ftw
+	int ret; // Final return value y0
 	int invite, noticed, oper, privmsg; // "Booleans"
 	int exempt; // Is exempted?
 	int ctcp, ctcpreply; // CTCP?
@@ -525,7 +547,7 @@ static int repeatprot_override(Cmdoverride *ovr, aClient *cptr, aClient *sptr, i
 	invite = (!strcmp(cmd, "INVITE"));
 
 	for(exEntry = exemptList; exEntry; exEntry = exEntry->next) {
-		if(!match(exEntry->mask, make_nick_user_host(sptr->name, sptr->user->username, sptr->user->realhost))) {
+		if(!match(exEntry->mask, make_nick_user_host(sptr->name, sptr->user->username, sptr->user->realhost)) || !match(exEntry->mask, make_nick_user_host(sptr->name, sptr->user->username, sptr->ip))) {
 			exempt = 1;
 			break;
 		}
@@ -542,21 +564,24 @@ static int repeatprot_override(Cmdoverride *ovr, aClient *cptr, aClient *sptr, i
 			return CallCmdoverride(ovr, cptr, sptr, parc, parv); // Run original function yo
 	}
 
-	// Build full message, leave out spaces on purpose ;]
+	if(ctcp || noticed || privmsg || invite) // Need to skip the "target" fam ('PRIVMSG <target> :<msg>' and 'INVITE <target> #chan')
+		i = 2;
+	else
+		i = 1; // For oper only really (OPER <nick> <pass>)
+
+	// (re)build full message
 	memset(msg, '\0', sizeof(msg)); // Premium nullbytes
-	for(i = 2; i < parc; i++) {
+	for(; i < parc; i++) {
 		char *nTemp = strdup(parv[i]); // Clone that shit cuz we gonna b destructive
 		char *sp; // Garbage pointer =]
-		for(j = 0; (werd = strtoken(&sp, nTemp, " ")); nTemp = NULL, j++) {
+		for(j = 0; (werd = strtoken(&sp, nTemp, " ")); nTemp = NULL, j++) { // Required for shit like PRIVMSG ;]
 			// Only strncpy on the first pass obv
-			if(j == 0) {
+			if(!msg[0])
 				strncpy(msg, werd, strlen(werd));
-				// Only care about the user for OPER commands
-				if(oper)
-					break;
-			}
-			else
+			else {
+				strncat(msg, " ", strlen(" "));
 				strncat(msg, werd, strlen(werd));
+			}
 		}
 	}
 
@@ -593,8 +618,8 @@ static int repeatprot_override(Cmdoverride *ovr, aClient *cptr, aClient *sptr, i
 			}
 		}
 
-		// Nigga may be alternating messages
-		if(!strcmp(message->last, plaintext) || (message->prev && !strcmp(message->prev, plaintext)))
+		// Nigga may be alternating messages (always increment for /OPER lol)
+		if(oper || !strcmp(message->last, plaintext) || (message->prev && !strcmp(message->prev, plaintext)))
 			message->count++;
 		else  {
 			// In case we just blocked it and this isn't a known message, reset the counter to allow it through
@@ -615,11 +640,13 @@ static int repeatprot_override(Cmdoverride *ovr, aClient *cptr, aClient *sptr, i
 
 	if(message->count >= repeatThreshold) {
 		// Let's not reset the counter here, causing it to keep getting blocked ;3
-		// No need to free the message object as repeatprot_free flushes it when the client quits anywyas =]
-		return dropMessage(cptr, sptr); // R E K T
+		// No need to free the message object as repeatprot_free flushes it when the client quits anyways =]
+		ret = dropMessage(cptr, sptr, (ctcp ? "CTCP" : cmd), plaintext); // R E K T
 	}
+	else
+		ret = CallCmdoverride(ovr, cptr, sptr, parc, parv); // Run original function yo
 
-	return CallCmdoverride(ovr, cptr, sptr, parc, parv); // Run original function yo
+	return ret;
 }
 
 void repeatprot_free(ModData *md) {

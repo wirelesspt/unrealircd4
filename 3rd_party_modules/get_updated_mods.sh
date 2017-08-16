@@ -1,6 +1,6 @@
-rm -r old
-mkdir old
-mv *.c old /
+rm -rf .old/
+mkdir .old/
+mv *.c *.so .old/
 
 echo "Downloading updated modules";
 echo
@@ -19,11 +19,12 @@ wget --user-agent="Mozilla/5.0" https://gitgud.malvager.net/Wazakindjes/unrealir
 wget --user-agent="Mozilla/5.0" https://gitgud.malvager.net/Wazakindjes/unrealircd_mods/raw/master/uncommon/m_repeatprot.c
 wget --user-agent="Mozilla/5.0" https://gitgud.malvager.net/Wazakindjes/unrealircd_mods/raw/master/uncommon/m_textshun.c
 wget --user-agent="Mozilla/5.0" https://gitgud.malvager.net/Wazakindjes/unrealircd_mods/raw/master/u4/m_rmtkl.c
+wget --user-agent="Mozilla/5.0" https://gitgud.malvager.net/Wazakindjes/unrealircd_mods/raw/master/u4/m_block_masshighlight.c
 
 echo
 ls *.c
-echo 
+echo
 ls *.c |wc -l
 
 echo
-echo "You should have a total of 15 modules";
+echo "You should have a total of 16 modules";

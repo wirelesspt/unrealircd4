@@ -28,7 +28,7 @@ ModDataInfo *umsgMDI; // To store some shit with the channel ;]
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_uniquemsg) = {
 	"m_uniquemsg", // Module name
-	"$Id: v1.0 2017/04/08 Gottem$", // Version
+	"$Id: v1.01 2017/07/30 Gottem$", // Version
 	"Implements chmode +U to prevent people from repeating messages", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -86,7 +86,11 @@ int is_chanowner_prot(aClient *sptr, aChannel *chptr) {
 
 	if(chptr) { // Sanity cheqq
 		if((lp = find_membership_link(sptr->user->channel, chptr))) {
-			if(lp->flags & (CHFL_CHANOWNER|CHFL_CHANPROT))
+			#ifdef PREFIX_AQ
+				if(lp->flags & (CHFL_CHANOWNER|CHFL_CHANPROT))
+			#else
+				if(lp->flags & CHFL_CHANOP)
+			#endif
 				return 1;
 		}
 	}

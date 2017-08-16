@@ -27,7 +27,7 @@ int lcIt = 0; // Lowercase 'em instead
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_anticaps) = {
 	"m_anticaps", // Module name
-	"$Id: v1.02 2017/01/18 Gottem$", // Version
+	"$Id: v1.03 2017/07/27 Gottem$", // Version
 	"Block messages that contain a configurable amount of capital letters", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -200,7 +200,10 @@ static int anticaps_override(Cmdoverride *ovr, aClient *cptr, aClient *sptr, int
 	if(BadPtr(parv[1]) || BadPtr(parv[2]) || !sptr || IsULine(sptr) || IsServer(sptr) || IsMe(sptr) || IsOper(sptr) || strlen(parv[2]) < minLength)
 		return CallCmdoverride(ovr, cptr, sptr, parc, parv); // Run original function yo
 
-	plaintext = (char *)StripControlCodes(StripColors(parv[2])); // Some shitty ass scripts may use colours/markup, so fuck that
+	char p[strlen(parv[2]) + 1]; // Let's not modify parv[2] directly =]
+	strncpy(p, parv[2], sizeof(p)); // Copy that shit fam
+
+	plaintext = (char *)StripControlCodes(StripColors(p)); // Some shitty ass scripts may use colours/markup, so fuck that
 	perc = len = caps = 0;
 
 	for(i = 0; plaintext[i]; i++) {
@@ -212,17 +215,26 @@ static int anticaps_override(Cmdoverride *ovr, aClient *cptr, aClient *sptr, int
 		len++;
 	}
 
-	if(len == 0) // Inb4division by zero lmao
+	if(!caps || !len) // Inb4division by zero lmao
 		return CallCmdoverride(ovr, cptr, sptr, parc, parv); // Run original function yo
 
 	perc = (int)(((float)caps / (float)len) * 100);
 	if(perc >= capsLimit) {
-		if(!lcIt) {
-			sendnotice(sptr, "*** Cannot send to %s: your message cannot contain more than %d%% capital letters", parv[1], capsLimit);
+		if(!lcIt) { // If not configured to lowercase em, deny/drop the message
+			sendnotice(sptr, "*** Cannot send to %s: your message contains too many capital letters (%d%% >= %d%%)", parv[1], perc, capsLimit);
 			return 0; // Stop processing yo
 		}
 
-		for(i = 0; plaintext[i]; i++)
+		if(*plaintext == '\001') { // Might be an ACTION or CTCP
+			if(len >= 7 && !strncmp(&plaintext[1], "ACTION ", 7)) // Let's not lowercase the ACTION bit ;];];]];]
+				i = 8; // Skippem
+			else if(plaintext[len - 1] == '\001') // Not an ACTION so it's a CTCP, ignore it all
+				i = len + 1; // Dirty shit =]
+		}
+		else
+			i = 0; // No CTCP/ACTION found, lowercase all lol
+
+		for(; plaintext[i]; i++)
 			plaintext[i] = tolower(plaintext[i]);
 		parv[2] = plaintext;
 	}
