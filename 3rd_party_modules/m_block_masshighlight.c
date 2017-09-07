@@ -34,6 +34,7 @@ struct {
 	char *reason; // Reason for X:Lines or for the notice to offending users
 	unsigned short int snotice; // Whether to send snotices or n0, simply 0 or 1
 	unsigned short int banident; // Whether to ban ident@host or simply *@host
+	unsigned short int multiline; // Check over multiple lines or just the one ;]
 
 	// These are just for setting to 0 or 1 to see if we got em config directives ;]
 	unsigned short got_maxnicks;
@@ -43,12 +44,13 @@ struct {
 	unsigned short got_reason;
 	unsigned short got_snotice;
 	unsigned short got_banident;
+	unsigned short got_multiline;
 } muhcfg;
 
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_block_masshighlight) = {
 	"m_block_masshighlight", // Module name
-	"$Id: v1.0 2017/08/16 Gottem$", // Version
+	"$Id: v1.01 2017/08/16 Gottem$", // Version
 	"Prevent mass highlights network-wide", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -267,6 +269,15 @@ int masshighlight_configtest(ConfigFile *cf, ConfigEntry *ce, int type, int *err
 			continue;
 		}
 
+		if(!strcmp(cep->ce_varname, "multiline")) {
+			muhcfg.got_multiline = 1;
+			if(!cep->ce_vardata || (strcmp(cep->ce_vardata, "0") && strcmp(cep->ce_vardata, "1"))) {
+				config_error("%s:%i: %s::%s must be either 0 or 1 fam", cep->ce_fileptr->cf_filename, cep->ce_varlinenum, MYCONF, cep->ce_varname);
+				errors++; // Increment err0r count fam
+			}
+			continue;
+		}
+
 		// Anything else is unknown to us =]
 		config_warn("%s:%i: unknown item %s::%s", cep->ce_fileptr->cf_filename, cep->ce_varlinenum, MYCONF, cep->ce_varname); // So display just a warning
 	}
@@ -304,6 +315,9 @@ int masshighlight_configposttest(int *errs) {
 
 	if(!muhcfg.got_banident) // Lazy mode, even though it's not required for all actions, set it anyways =]
 		muhcfg.banident = 1; // Default to ident@host imo tbh
+
+	if(!muhcfg.got_multiline)
+		muhcfg.multiline = 0; // Default to single line imo
 
 	*errs = errors;
 	return errors ? -1 : 1;
@@ -369,6 +383,11 @@ int masshighlight_configrun(ConfigFile *cf, ConfigEntry *ce, int type) {
 			muhcfg.banident = atoi(cep->ce_vardata);
 			continue;
 		}
+
+		if(!strcmp(cep->ce_varname, "multiline")) {
+			muhcfg.multiline = atoi(cep->ce_vardata);
+			continue;
+		}
 	}
 
 	return 1; // We good
@@ -416,6 +435,9 @@ char *masshighlight_hook_prechanmsg(aClient *sptr, aChannel *chptr, char *text, 
 				}
 			}
 		}
+
+		if(!muhcfg.multiline && !clearem) // If single line mode and didn't find a nick
+			clearem = 1; // Need to clear that shit anyways lol
 
 		moddata_membership(lp2, massHLMDI).i = (clearem ? 0 : hl); // Actually set the counter =]
 		if(blockem) { // Need to bl0ck?

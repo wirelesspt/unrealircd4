@@ -115,6 +115,7 @@ int pmdelay_configtest(ConfigFile *cf, ConfigEntry *ce, int type, int *errs) {
 		if(!isdigit(ce->ce_vardata[i])) {
 			config_error("%s:%i: set::%s must be an integer of >= 10", ce->ce_fileptr->cf_filename, ce->ce_varlinenum, MYCONF);
 			errors++; // Increment err0r count fam
+			break;
 		}
 	}
 	if(!errors && atoi(ce->ce_vardata) < 10) {
