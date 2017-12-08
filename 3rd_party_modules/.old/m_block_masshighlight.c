@@ -28,7 +28,7 @@ void masshighlight_md_free(ModData *md);
 char *masshighlight_hook_prechanmsg(aClient *sptr, aChannel *chptr, char *text, int notice);
 
 // Muh globals
-int spamf_ugly_vchanoverride = 0; // For viruschan shit =]
+extern MODVAR int spamf_ugly_vchanoverride; // For viruschan shit =]
 static ModuleInfo *massHLMI = NULL; // Store ModuleInfo so we can use it to check for errors in MOD_LOAD
 ModDataInfo *massHLMDI; // To store some shit with the channel ;]
 Cmode_t EXTCMODE_NOCHECK_MASSHIGHLIGHT; // For storing the exemption chanmode =]

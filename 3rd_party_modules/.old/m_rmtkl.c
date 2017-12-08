@@ -14,7 +14,7 @@ CMD_FUNC(m_rmtkl); // Register command function
 
 ModuleHeader MOD_HEADER(m_rmtkl) = {
 	"m_rmtkl",
-	"$Id: v1.23 2017/11/26 Gottem$",
+	"$Id: v1.22 2017/04/04 Gottem$",
 	"Adds /rmtkl command to easily remove *:Lines in bulk",
 	"3.2-b8-1",
 	NULL
@@ -302,8 +302,8 @@ CMD_FUNC(m_rmtkl) {
 
 			// (Global) Q:Line have a slightly different format in snomasks
 			if(tk->type & TKL_NICK) {
-				sendto_snomask(SNO_TKL, "%s removed %s %s (set at %s " "- reason: %s)", sptr->name, tkltype->txt, tk->hostmask, (gmt ? gmt : "<unknown>"), tk->reason);
-				ircd_log(LOG_TKL, "%s removed %s %s (set at %s - reason: %s)", sptr->name, tkltype->txt, tk->hostmask, (gmt ? gmt : "<unknown>"), tk->reason);
+				sendto_snomask(SNO_TKL, "%s removed %s %s (set at %s " "- reason: %s)", sptr->name, tkltype->txt, tk->hostmask, gmt ?: "<unknown>", tk->reason);
+				ircd_log(LOG_TKL, "%s removed %s %s (set at %s - reason: %s)", sptr->name, tkltype->txt, tk->hostmask, gmt ?: "<unknown>", tk->reason);
 			}
 
 			// Also spamfilters =]
@@ -312,16 +312,16 @@ CMD_FUNC(m_rmtkl) {
 				if(flag == 'f') // Cuz apparently 'f' means it was added through the conf or is built-in ('F' is ok tho)
 					continue;
 
-				sendto_snomask(SNO_TKL, "%s removed %s [%s] %s (set at %s " "- reason: %s)", sptr->name, tkltype->txt, banact_valtostring(tk->ptr.spamf->action), tk->reason, (gmt ? gmt : "<unknown>"), tk->ptr.spamf->tkl_reason);
+				sendto_snomask(SNO_TKL, "%s removed %s [%s] %s (set at %s " "- reason: %s)", sptr->name, tkltype->txt, banact_valtostring(tk->ptr.spamf->action) ?: "<unknown>", tk->reason, gmt ?: "<unknown>", tk->ptr.spamf->tkl_reason);
 
-				ircd_log(LOG_TKL, "%s removed %s [%s] %s (set at %s " "- reason: %s)", sptr->name, tkltype->txt, banact_valtostring(tk->ptr.spamf->action), tk->reason, (gmt ? gmt : "<unknown>"), tk->ptr.spamf->tkl_reason);
+				ircd_log(LOG_TKL, "%s removed %s [%s] %s (set at %s " "- reason: %s)", sptr->name, tkltype->txt, banact_valtostring(tk->ptr.spamf->action) ?: "<unknown>", tk->reason, gmt ?: "<unknown>", tk->ptr.spamf->tkl_reason);
 
 			}
 
 			// All other *:Lines have the same format
 			else {
-				sendto_snomask(SNO_TKL, "%s removed %s %s@%s (set at %s - reason: %s)", sptr->name, tkltype->txt, tk->usermask, tk->hostmask, (gmt ? gmt : "<unknown>"), tk->reason);
-				ircd_log(LOG_TKL, "%s removed %s %s@%s (set at %s - reason: %s)", sptr->name, tkltype->txt, tk->usermask, tk->hostmask, (gmt ? gmt : "<unknown>"), tk->reason);
+				sendto_snomask(SNO_TKL, "%s removed %s %s@%s (set at %s - reason: %s)", sptr->name, tkltype->txt, tk->usermask, tk->hostmask, gmt ?: "<unknown>", tk->reason);
+				ircd_log(LOG_TKL, "%s removed %s %s@%s (set at %s - reason: %s)", sptr->name, tkltype->txt, tk->usermask, tk->hostmask, gmt ?: "<unknown>", tk->reason);
 			}
 
 			RunHook5(HOOKTYPE_TKL_DEL, cptr, sptr, tk, NULL, NULL); // Run hooks lol

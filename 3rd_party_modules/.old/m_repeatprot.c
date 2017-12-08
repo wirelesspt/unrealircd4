@@ -63,7 +63,7 @@ time_t trigTimespan = 0;
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_repeatprot) = {
 	"m_repeatprot", // Module name
-	"$Id: v1.25 2017/11/21 Gottem$", // Version
+	"$Id: v1.24 2017/07/13 Gottem$", // Version
 	"G(Z):Line/kill users (or block their messages) who spam through CTCP, INVITE, OPER, NOTICE and/or PRIVMSG", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -526,8 +526,8 @@ static int repeatprot_override(Cmdoverride *ovr, aClient *cptr, aClient *sptr, i
 	if(!sptr || BadPtr(parv[1]) || BadPtr(parv[2]) || BadPtr(parv[parc - 1]))
 		return CallCmdoverride(ovr, cptr, sptr, parc, parv); // Run original function yo
 
-	// Preemptively allow non-local users, non-persons, servers, U:Lines and 0pers
-	if(!IsPerson(sptr) || !MyClient(sptr) || IsULine(sptr) || IsOper(sptr))
+	// Preemptively allow servers, U:Lines and 0pers
+	if(IsServer(sptr) || IsMe(sptr) || IsULine(sptr) || IsOper(sptr))
 		return CallCmdoverride(ovr, cptr, sptr, parc, parv); // Run original function yo
 
 	exempt = 0;
