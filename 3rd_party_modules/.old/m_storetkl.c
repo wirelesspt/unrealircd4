@@ -1,7 +1,7 @@
 // One include for all cross-platform compatibility thangs
 #include "unrealircd.h"
 
-#define TKL_DB "data/tkl.db"
+#define TKL_DB "tkl.db"
 #define TKL_DB_VERSION 1000
 
 // Muh macros lol
@@ -16,7 +16,8 @@
 		if((x)) \
 		{ \
 			close(fd); \
-			config_warn("[storetkl] Read error from the persistent storage file '%s/%s' on server %s", SCRIPTDIR, TKL_DB, me.name); \
+			config_warn("[storetkl] Read error from the persistent storage file '%s/%s' on server %s", PERMDATADIR, TKL_DB, me.name); \
+			free(filepath); \
 			return -1; \
 		} \
 	} while (0)
@@ -26,7 +27,8 @@
 		if((x)) \
 		{ \
 			close(fd); \
-			config_warn("[storetkl] Write error from the persistent storage file '%s/%s' on server %s", SCRIPTDIR, TKL_DB, me.name); \
+			config_warn("[storetkl] Write error from the persistent storage file '%s/%s' on server %s", PERMDATADIR, TKL_DB, me.name); \
+			free(filepath); \
 			return -1; \
 		} \
 	} while (0)
@@ -59,7 +61,7 @@ static unsigned tkl_db_version = TKL_DB_VERSION; // TKL DB version kek
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_storetkl) = {
 	"m_storetkl", // Module name
-	"$Id: v1.0 2017/04/04 Gottem$", // Version
+	"$Id: v1.01 2017/11/26 Gottem$", // Version
 	"Store TKL entries persistently across IRCd restarts", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -127,15 +129,16 @@ int writeDB(aTKline *origtkl, char what) {
 	size_t count; // Amount of X:Lines
 	int index; // For iterating over all the types in the tklines "hash"
 	aTKline *tkl; // Actual iter8or =]
-	size_t pathlen = strlen(SCRIPTDIR) + strlen(TKL_DB) + 1; // Includes a slash lol
-	char filepath[pathlen + 1]; // Includes a nullbyet yo
+	size_t pathlen = strlen(PERMDATADIR) + strlen(TKL_DB) + 1; // Includes a slash lol
+	char *filepath; // Full path obv
 
-	snprintf(filepath, sizeof(filepath), "%s/%s", SCRIPTDIR, TKL_DB); // Store 'em
-	filepath[pathlen] = '\0'; // Shouldn't be necessary but let's =]
+	filepath = malloc(pathlen + 1); // Includes a nullbyet yo
+	snprintf(filepath, pathlen + 1, "%s/%s", PERMDATADIR, TKL_DB); // Store 'em
 	OpenFile(fd, filepath, O_CREAT | O_WRONLY | O_TRUNC); // Open ze fiel
 
 	if(fd == -1) { // Error opening that shit
-		config_warn("[storetkl] Unable to open the persistent storage file '%s/%s' for writing on server %s: %s", SCRIPTDIR, TKL_DB, me.name, strerror(errno));
+		config_warn("[storetkl] Unable to open the persistent storage file '%s/%s' for writing on server %s: %s", PERMDATADIR, TKL_DB, me.name, strerror(errno));
+		free(filepath);
 		return -1; // Gtfo
 	}
 
@@ -182,6 +185,7 @@ int writeDB(aTKline *origtkl, char what) {
 	}
 
  	close(fd); // Don't f0get to close 'em lol
+ 	free(filepath);
 	return 0; // We good (non-zero = error)
 }
 
@@ -193,11 +197,11 @@ int readDB(void) {
 	int rewrite = 0; // If we got expired X:Lines etc, let's rewrite (i.e. clean up) the DB file =]
 	unsigned version; // For checking 'em DB version
 	aTKline *tkl; // Iter8or
-	size_t pathlen = strlen(SCRIPTDIR) + strlen(TKL_DB) + 1; // Includes a slash lol
-	char filepath[pathlen + 1]; // Includes a nullbyet yo
+	size_t pathlen = strlen(PERMDATADIR) + strlen(TKL_DB) + 1; // Includes a slash lol
+	char *filepath; // Full path obv
 
-	snprintf(filepath, sizeof(filepath), "%s/%s", SCRIPTDIR, TKL_DB); // Store 'em
-	filepath[pathlen] = '\0'; // Shouldn't be necessary but let's =]
+	filepath = malloc(pathlen + 1); // Includes a nullbyet yo
+	snprintf(filepath, pathlen + 1, "%s/%s", PERMDATADIR, TKL_DB); // Store 'em
 
 	// Let's send a message saying we loading some shi ;]
 	ircd_log(LOG_ERROR, "[storetkl] Reading stored X:Lines from '%s'", filepath);
@@ -207,6 +211,7 @@ int readDB(void) {
 	if(fd == -1) { // Error when opening
 		if(errno != ENOENT) // If file doesn't even exists, don't show a warning =]
 			config_warn("[storetkl] Unable to open the persistent storage file '%s' for reading on server %s: %s", filepath, me.name, strerror(errno));
+		free(filepath);
 		return -1; // And return error
 	}
 
@@ -216,6 +221,7 @@ int readDB(void) {
 		// N.B.: I can probably heck something to provide backwards compatibility, but there is no need for this atm
 		config_warn("File '%s' has a wrong database version (expected: %u, got: %u) on server %s", filepath, tkl_db_version, version, me.name); // Display warning familia
 		close(fd); // Close 'em
+		free(filepath);
 		return -1; // And gtfo
 	}
 
@@ -375,6 +381,7 @@ int readDB(void) {
 	}
 
 	close(fd); // Don't forget to close 'em
+	free(filepath);
 
 	if(num) {
 		// Send message about re-adding shit

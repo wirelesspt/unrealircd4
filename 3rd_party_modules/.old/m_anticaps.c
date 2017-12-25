@@ -24,7 +24,7 @@ int lcIt = 0; // Lowercase 'em instead
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_anticaps) = {
 	"m_anticaps", // Module name
-	"$Id: v1.04 2017/09/13 Gottem$", // Version
+	"$Id: v1.05 2017/11/26 Gottem$", // Version
 	"Block messages that contain a configurable amount of capital letters", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -194,8 +194,8 @@ static int anticaps_override(Cmdoverride *ovr, aClient *cptr, aClient *sptr, int
 	if(BadPtr(parv[1]) || BadPtr(parv[2]) || !sptr || IsULine(sptr) || IsServer(sptr) || IsMe(sptr) || IsOper(sptr) || strlen(parv[2]) < minLength)
 		return CallCmdoverride(ovr, cptr, sptr, parc, parv); // Run original function yo
 
-	char p[strlen(parv[2]) + 1]; // Let's not modify parv[2] directly =]
-	strncpy(p, parv[2], sizeof(p)); // Copy that shit fam
+	char p[BUFSIZE + 1]; // Let's not modify parv[2] directly =]
+	snprintf(p, sizeof(p), "%s", parv[2]); // Copy that shit fam
 
 	// Some shitty ass scripts may use different colours/markup across chans, so fuck that
 	if(!(plaintext = (char *)StripColors(p)) || !(plaintext = (char *)StripControlCodes(plaintext)))
