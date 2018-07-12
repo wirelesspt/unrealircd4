@@ -65,7 +65,7 @@ struct {
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_block_masshighlight) = {
 	"m_block_masshighlight", // Module name
-	"$Id: v1.04 2017/11/19 Gottem/k4be$", // Version
+	"$Id: v1.05 2017/12/09 Gottem/k4be$", // Version
 	"Prevent mass highlights network-wide", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -615,7 +615,7 @@ char *masshighlight_hook_prechanmsg(aClient *sptr, aChannel *chptr, char *text, 
 			}
 		}
 
-		if(100 * hl_nickslen / msglen > muhcfg.percent) { // Check if we exceed the max allowed percentage
+		if(msglen && 100 * hl_nickslen / msglen > muhcfg.percent) { // Check if we exceed the max allowed percentage
 			hl_cur += hl_new; // Set moddata counter to include the ones found this round
 			clearem = 0; // And don't clear moddata
 			if(hl_cur > muhcfg.maxnicks) // Check if we also exceed max allowed nicks

@@ -24,8 +24,8 @@ int lcIt = 0; // Lowercase 'em instead
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_anticaps) = {
 	"m_anticaps", // Module name
-	"$Id: v1.05 2017/11/26 Gottem$", // Version
-	"Block messages that contain a configurable amount of capital letters", // Description
+	"$Id: v1.06 2018/04/16 Gottem$", // Version
+	"Block/lowercase messages that contain a configurable amount of capital letters", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
 };
@@ -198,7 +198,7 @@ static int anticaps_override(Cmdoverride *ovr, aClient *cptr, aClient *sptr, int
 	snprintf(p, sizeof(p), "%s", parv[2]); // Copy that shit fam
 
 	// Some shitty ass scripts may use different colours/markup across chans, so fuck that
-	if(!(plaintext = (char *)StripColors(p)) || !(plaintext = (char *)StripControlCodes(plaintext)))
+	if(!(plaintext = (char *)StripControlCodes(p)))
 		return CallCmdoverride(ovr, cptr, sptr, parc, parv);
 
 	perc = len = caps = 0;
