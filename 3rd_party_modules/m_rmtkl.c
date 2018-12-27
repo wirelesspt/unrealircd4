@@ -1,3 +1,9 @@
+/* Copyright (C) All Rights Reserved
+** Written by Gottem <support@gottem.nl>
+** Website: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods
+** License: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods/raw/master/LICENSE
+*/
+
 #include "unrealircd.h"
 
 // Some macros lel

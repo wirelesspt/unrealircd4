@@ -1,3 +1,9 @@
+/* Copyright (C) All Rights Reserved
+** Written by Gottem <support@gottem.nl>
+** Website: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods
+** License: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods/raw/master/LICENSE
+*/
+
 // One include for all cross-platform compatibility thangs
 #include "unrealircd.h"
 
@@ -569,13 +575,13 @@ int pmlist_configtest(ConfigFile *cf, ConfigEntry *ce, int type, int *errs) {
 		if(!strcmp(cep->ce_varname, "noticedelay")) {
 			// Should be an integer yo
 			if(!cep->ce_vardata) {
-				config_error("%s:%i: %s::%s must be an integer of zero or larger m8", cep->ce_fileptr->cf_filename, cep->ce_varlinenum, MYCONF, cep->ce_varname);
+				config_error("%s:%i: %s::%s must be an integer of 0 or larger m8", cep->ce_fileptr->cf_filename, cep->ce_varlinenum, MYCONF, cep->ce_varname);
 				errors++; // Increment err0r count fam
 				continue;
 			}
 			for(i = 0; cep->ce_vardata[i]; i++) {
 				if(!isdigit(cep->ce_vardata[i])) {
-					config_error("%s:%i: %s::%s must be an integer of zero or larger m8", cep->ce_fileptr->cf_filename, cep->ce_varlinenum, MYCONF, cep->ce_varname);
+					config_error("%s:%i: %s::%s must be an integer of 0 or larger m8", cep->ce_fileptr->cf_filename, cep->ce_varlinenum, MYCONF, cep->ce_varname);
 					errors++; // Increment err0r count fam
 					break;
 				}

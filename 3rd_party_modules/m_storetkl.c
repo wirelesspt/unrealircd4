@@ -1,3 +1,9 @@
+/* Copyright (C) All Rights Reserved
+** Written by Gottem <support@gottem.nl>
+** Website: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods
+** License: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods/raw/master/LICENSE
+*/
+
 // One include for all cross-platform compatibility thangs
 #include "unrealircd.h"
 
@@ -196,7 +202,6 @@ int readDB(void) {
 	int num = 0; // Amount of X:Lines we actually ended up re-adding
 	int rewrite = 0; // If we got expired X:Lines etc, let's rewrite (i.e. clean up) the DB file =]
 	unsigned version; // For checking 'em DB version
-	aTKline *tkl; // Iter8or
 	size_t pathlen = strlen(PERMDATADIR) + strlen(TKL_DB) + 1; // Includes a slash lol
 	char *filepath; // Full path obv
 

@@ -91,7 +91,7 @@ static char *muhhalp[] = {
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_textshun) = {
 	"m_textshun", // Module name
-	"$Id: v1.04 2017/10/21 Gottem$", // Version
+	"$Id: v1.05 2018/04/16 Gottem$", // Version
 	"Drop messages based on nick and body", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -359,7 +359,7 @@ char *_check_premsg(aClient *sptr, char *text) {
 	char *body;
 
 	// Strip all markup shit (bold, italikk etc) and colours
-	if(!(body = (char *)StripColors(text)) || !(body = (char *)StripControlCodes(body)))
+	if(!(body = (char *)StripControlCodes(text)))
 		return text;
 
 	if(!IsServer(sptr) && !IsMe(sptr) && !IsULine(sptr) && !IsOper(sptr) && (tEntry = match_tline(sptr, body))) { // Servers, U:Lines and opers are exempt for obv raisins

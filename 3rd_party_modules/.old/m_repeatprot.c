@@ -63,7 +63,7 @@ time_t trigTimespan = 0;
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_repeatprot) = {
 	"m_repeatprot", // Module name
-	"$Id: v1.25 2017/11/21 Gottem$", // Version
+	"$Id: v1.26 2018/04/16 Gottem$", // Version
 	"G(Z):Line/kill users (or block their messages) who spam through CTCP, INVITE, OPER, NOTICE and/or PRIVMSG", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -582,7 +582,7 @@ static int repeatprot_override(Cmdoverride *ovr, aClient *cptr, aClient *sptr, i
 	for(i = 0; msg[i]; i++)
 		msg[i] = tolower(msg[i]);
 
-	plaintext = StripColors(msg);
+	plaintext = (char *)StripControlCodes(msg);
 	pr = plaintext;
 	pw = plaintext;
 	while(*pr) {

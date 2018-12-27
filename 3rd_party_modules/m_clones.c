@@ -1,3 +1,9 @@
+/* Copyright (C) All Rights Reserved
+** Written by Gottem <support@gottem.nl>
+** Website: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods
+** License: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods/raw/master/LICENSE
+*/
+
 // One include for all cross-platform compatibility thangs
 #include "unrealircd.h"
 
@@ -79,7 +85,6 @@ static char *clones_halp[] = {
 
 CMD_FUNC(m_clones) {
 	aClient *acptr, *acptr2;
-	int i, j;
 	u_int min, count, found = 0;
 
 	if(!IsPerson(sptr))

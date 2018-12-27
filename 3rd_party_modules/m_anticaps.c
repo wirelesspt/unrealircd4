@@ -1,3 +1,9 @@
+/* Copyright (C) All Rights Reserved
+** Written by Gottem <support@gottem.nl>
+** Website: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods
+** License: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods/raw/master/LICENSE
+*/
+
 // One include for all cross-platform compatibility thangs
 #include "unrealircd.h"
 
@@ -24,7 +30,7 @@ int lcIt = 0; // Lowercase 'em instead
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_anticaps) = {
 	"m_anticaps", // Module name
-	"$Id: v1.06 2018/04/16 Gottem$", // Version
+	"$Id: v1.08 2018/09/25 Gottem$", // Version
 	"Block/lowercase messages that contain a configurable amount of capital letters", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -95,7 +101,7 @@ int anticaps_configtest(ConfigFile *cf, ConfigEntry *ce, int type, int *errs) {
 		if(!strcmp(cep->ce_varname, "capslimit")) {
 			limit = atoi(cep->ce_vardata);
 			if(limit <= 0 || limit > 100) {
-				config_error("%s:%i: %s::capslimit must be an integer from 1 to 100 (represents a percentage)", cep->ce_fileptr->cf_filename, cep->ce_varlinenum, MYCONF);
+				config_error("%s:%i: %s::capslimit must be an integer from 1 thru 99 (represents a percentage)", cep->ce_fileptr->cf_filename, cep->ce_varlinenum, MYCONF);
 				errors++;
 			}
 			continue;
@@ -104,7 +110,7 @@ int anticaps_configtest(ConfigFile *cf, ConfigEntry *ce, int type, int *errs) {
 		if(!strcmp(cep->ce_varname, "minlength")) {
 			for(i = 0; cep->ce_vardata[i]; i++) {
 				if(!isdigit(cep->ce_vardata[i])) {
-					config_error("%s:%i: %s::minlength must be an integer of zero or larger m8", cep->ce_fileptr->cf_filename, cep->ce_varlinenum, MYCONF);
+					config_error("%s:%i: %s::minlength must be an integer of 0 or larger m8", cep->ce_fileptr->cf_filename, cep->ce_varlinenum, MYCONF);
 					errors++; // Increment err0r count fam
 					break;
 				}
@@ -187,23 +193,23 @@ static int anticaps_override(Cmdoverride *ovr, aClient *cptr, aClient *sptr, int
 	** So "PRIVMSG test" would result in parc = 2 and parv[1] = "test"
 	** Also, parv[0] seems to always be NULL, so better not rely on it fam
 	*/
-	char *plaintext; // We gonna fix up da string fam
+	char plaintext[BUFSIZE]; // Let's not modify parv[2] directly =]
+	char *tmpp; // We gonna fix up da string fam
 	int perc; // Store percentage etc
-	int i, len, caps; // To count full length as well as caps
+	int i, len, rlen, caps; // To count full length as well as caps
 
 	if(BadPtr(parv[1]) || BadPtr(parv[2]) || !sptr || IsULine(sptr) || IsServer(sptr) || IsMe(sptr) || IsOper(sptr) || strlen(parv[2]) < minLength)
 		return CallCmdoverride(ovr, cptr, sptr, parc, parv); // Run original function yo
 
-	char p[BUFSIZE + 1]; // Let's not modify parv[2] directly =]
-	snprintf(p, sizeof(p), "%s", parv[2]); // Copy that shit fam
-
 	// Some shitty ass scripts may use different colours/markup across chans, so fuck that
-	if(!(plaintext = (char *)StripControlCodes(p)))
+	if(!(tmpp = (char *)StripControlCodes(parv[2])))
 		return CallCmdoverride(ovr, cptr, sptr, parc, parv);
 
-	perc = len = caps = 0;
+	memset(plaintext, '\0', sizeof(plaintext));
+	strlcpy(plaintext, tmpp, sizeof(plaintext));
+	perc = len = rlen = caps = 0;
 
-	for(i = 0; plaintext[i]; i++) {
+	for(i = 0; plaintext[i]; i++, rlen++) {
 		if(plaintext[i] == 32) // Let's skip spaces too
 			continue;
 
@@ -215,6 +221,20 @@ static int anticaps_override(Cmdoverride *ovr, aClient *cptr, aClient *sptr, int
 	if(!caps || !len) // Inb4division by zero lmao
 		return CallCmdoverride(ovr, cptr, sptr, parc, parv); // Run original function yo
 
+	i = 0;
+	if(*plaintext == '\001') { // Might be an ACTION or CTCP
+		if(rlen > 7 && !strncmp(&plaintext[1], "ACTION ", 7) && plaintext[rlen - 1] == '\001') {
+			caps -= 6; // Reduce caps count by 6 chars y0
+			len -= 8; // Also reduce the total length (including both \001's) so we're still good percent-wise
+			i = 8; // Let's not lowercase the ACTION bit later ;];];]];]
+		}
+		else if(plaintext[rlen - 1] == '\001') // Not an ACTION so maybe a CTCP, ignore it all if so
+			caps = 0;
+
+		if(caps <= 0 || len <= 0) // Correction may have reduced it to zero (never really _below_ zero but let's just anyways lel)
+			return CallCmdoverride(ovr, cptr, sptr, parc, parv);
+	}
+
 	perc = (int)(((float)caps / (float)len) * 100);
 	if(perc >= capsLimit) {
 		if(!lcIt) { // If not configured to lowercase em, deny/drop the message
@@ -222,17 +242,12 @@ static int anticaps_override(Cmdoverride *ovr, aClient *cptr, aClient *sptr, int
 			return 0; // Stop processing yo
 		}
 
-		if(*plaintext == '\001') { // Might be an ACTION or CTCP
-			if(len >= 7 && !strncmp(&plaintext[1], "ACTION ", 7)) // Let's not lowercase the ACTION bit ;];];]];]
-				i = 8; // Skippem
-			else if(plaintext[len - 1] == '\001') // Not an ACTION so it's a CTCP, ignore it all
-				i = len + 1; // Dirty shit =]
-		}
-		else
-			i = 0; // No CTCP/ACTION found, lowercase all lol
-
-		for(; plaintext[i]; i++)
+		// Lowercase it all lol
+		for(; plaintext[i]; i++) {
+			if(plaintext[i] < 65 || plaintext[i] > 122) // Premium ASCII yo, lazy mode
+				continue;
 			plaintext[i] = tolower(plaintext[i]);
+		}
 		parv[2] = plaintext;
 	}
 

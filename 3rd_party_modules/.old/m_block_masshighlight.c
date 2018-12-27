@@ -65,7 +65,7 @@ struct {
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_block_masshighlight) = {
 	"m_block_masshighlight", // Module name
-	"$Id: v1.05 2017/12/09 Gottem/k4be$", // Version
+	"$Id: v1.07 2018/04/16 Gottem/k4be$", // Version
 	"Prevent mass highlights network-wide", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -600,7 +600,7 @@ char *masshighlight_hook_prechanmsg(aClient *sptr, aChannel *chptr, char *text, 
 		hl_cur = moddata_membership(lp2, massHLMDI).i; // Get current count
 
 		// In case someone tries some funny business =]
-		if(!(cleantext = (char *)StripColors(text)) || !(cleantext = (char *)StripControlCodes(cleantext)))
+		if(!(cleantext = (char *)StripControlCodes(text)))
 			return text;
 
 		for(werd = strtoken(&p, cleantext, muhcfg.delimiters); werd; werd = strtoken(&p, NULL, muhcfg.delimiters)) { // Split that shit
@@ -642,7 +642,7 @@ char *masshighlight_hook_prechanmsg(aClient *sptr, aChannel *chptr, char *text, 
 				case 'k': // Kill em all
 					if(muhcfg.snotice)
 						sendto_snomask_global(SNO_EYES, "*** [block_masshighlight] Detected highlight spam in %s by %s, killing 'em", chptr->chname, sptr->name);
-					exit_client(sptr, sptr, sptr, muhcfg.reason);
+					dead_link(sptr, muhcfg.reason);
 					break;
 
 				case 't': // Tempshun kek

@@ -1,3 +1,9 @@
+/* Copyright (C) All Rights Reserved
+** Written by Gottem <support@gottem.nl>
+** Website: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods
+** License: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods/raw/master/LICENSE
+*/
+
 // One include for all cross-platform compatibility thangs
 #include "unrealircd.h"
 
@@ -28,7 +34,7 @@ int vhostCount = 0;
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_autovhost) = {
 	"m_autovhost", // Module name
-	"$Id: v1.04 2017/11/11 Gottem$", // Version
+	"$Id: v1.05 2018/07/22 Gottem$", // Version
 	"Apply vhosts at connect time based on users' raw nick formats or IPs", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -70,6 +76,8 @@ MOD_UNLOAD(m_autovhost) {
 		vhostEntry *vEntry;
 		while((vEntry = vhostList) != NULL) {
 			vhostList = vhostList->next;
+			if(vEntry->mask) free(vEntry->mask);
+			if(vEntry->vhost) free(vEntry->vhost);
 			free(vEntry);
 		}
 		vhostList = NULL;
@@ -108,7 +116,6 @@ char *replaceem(char *str, char *search, char *replace) {
 
 int autovhost_configtest(ConfigFile *cf, ConfigEntry *ce, int type, int *errs) {
 	int errors = 0; // Error count
-	int i; // Iterat0r
 	ConfigEntry *cep; // To store the current variable/value pair etc
 
 	// Since we'll add a top-level block to unrealircd.conf, need to filter on CONFIG_MAIN lmao
@@ -226,15 +233,35 @@ int autovhost_connect(aClient *sptr) {
 		return HOOK_CONTINUE;
 
 	vhostEntry *vEntry;
-	char *newhost;
+	char *newhost_nick, *newhost_ident, newhost[HOSTLEN];
+	int doident;
 	for(vEntry = vhostList; vEntry; vEntry = vEntry->next) {
 		// Check if the mask matches the user's full nick mask (with REAL host) or IP
 		if(!match(vEntry->mask, make_nick_user_host(sptr->name, sptr->user->username, sptr->user->realhost)) || !match(vEntry->mask, GetIP(sptr))) {
-			newhost = replaceem(vEntry->vhost, "$nick", sptr->name);
-			if(!valid_host(newhost)) { // Can't really do this earlier because of $nick etc ;];]
-				free(newhost);
-				break;
+			snprintf(newhost, sizeof(newhost), "%s", vEntry->vhost);
+			doident = (strstr(newhost, "$ident") ? 1 : 0);
+			if(strstr(newhost, "$nick")) {
+				newhost_nick = replaceem(newhost, "$nick", sptr->name);
+				if(!doident && !valid_host(newhost_nick)) { // Can't really do this earlier because of $nick etc ;];]
+					sendto_snomask_global(SNO_EYES, "[autovhost] Invalid result vhost: %s => %s", vEntry->vhost, newhost_nick);
+					free(newhost_nick);
+					break;
+				}
+				snprintf(newhost, sizeof(newhost), "%s", newhost_nick);
+				free(newhost_nick);
 			}
+
+			if(doident) {
+				newhost_ident = replaceem(newhost, "$ident", ((sptr->user && sptr->user->username) ? sptr->user->username : "unknown"));
+				if(!valid_host(newhost_ident)) { // Can't really do this earlier because of $ident etc ;];]
+					sendto_snomask_global(SNO_EYES, "[autovhost] Invalid result vhost: %s => %s", vEntry->vhost, newhost_ident);
+					free(newhost_ident);
+					break;
+				}
+				snprintf(newhost, sizeof(newhost), "%s", newhost_ident);
+				free(newhost_ident);
+			}
+
 
 			if(strlen(newhost) > HOSTLEN)
 				newhost[HOSTLEN] = '\0';
@@ -262,7 +289,6 @@ int autovhost_connect(aClient *sptr) {
 				userhost_changed(sptr); // m0ar CAP shit
 			#endif
 
-			free(newhost);
 			break;
 		}
 	}

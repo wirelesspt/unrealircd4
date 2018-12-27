@@ -1,3 +1,9 @@
+/* Copyright (C) All Rights Reserved
+** Written by Gottem <support@gottem.nl>
+** Website: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods
+** License: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods/raw/master/LICENSE
+*/
+
 // One include for all cross-platform compatibility thangs
 #include "unrealircd.h"
 
@@ -91,7 +97,7 @@ static char *muhhalp[] = {
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_textshun) = {
 	"m_textshun", // Module name
-	"$Id: v1.05 2018/04/16 Gottem$", // Version
+	"$Id: v1.06 2018/12/22 Gottem$", // Version
 	"Drop messages based on nick and body", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -358,6 +364,9 @@ char *_check_premsg(aClient *sptr, char *text) {
 	TLine *tEntry; // Iter8or
 	char *body;
 
+	if(!MyConnect(sptr)) // No need to check if it's not our client =]
+		return text;
+
 	// Strip all markup shit (bold, italikk etc) and colours
 	if(!(body = (char *)StripControlCodes(text)))
 		return text;
@@ -559,7 +568,7 @@ CMD_FUNC(m_textshun) {
 				}
 			}
 
-			if(exptmp) { // If the for() loop didn't enter the inner if(), expire field is sane
+			if(exptmp) { // If the for() loop didn't pass over the innermost if(), expire field is sane
 				expire = config_checkval(exptmp, CFG_TIME); // So get a long from the (possible) time string
 				rindex = 5; // And set reason index for parv[] to 5
 			}

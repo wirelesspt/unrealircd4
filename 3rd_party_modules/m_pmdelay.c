@@ -1,3 +1,9 @@
+/* Copyright (C) All Rights Reserved
+** Written by Gottem <support@gottem.nl>
+** Website: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods
+** License: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods/raw/master/LICENSE
+*/
+
 // One include for all cross-platform compatibility thangs
 #include "unrealircd.h"
 
@@ -18,7 +24,7 @@ int muhDelay = 60; // Default to 1 minute yo
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_pmdelay) = {
 	"m_pmdelay", // Module name
-	"$Id: v1.0 2017/03/15 Gottem$", // Version
+	"$Id: v1.01 2018/12/22 Gottem$", // Version
 	"Disallow new clients trying to send private messages until exceeding a certain timeout", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -71,12 +77,13 @@ char *pmdelay_hook_preusermsg(aClient *sptr, aClient *to, char *text, int notice
 	** notice: Should be obvious ;];]
 	*/
 	// Let's allow opers/servers/U:Lines to always send, also from anyone TO U:Lines (muh /ns identify lol)
-	if(!IsServer(sptr) && !IsMe(sptr) && !IsOper(sptr) && !IsULine(sptr) && !IsULine(to)) {
-		// Sanity check + delay check =]
-		if(sptr->local && TStime() - sptr->local->firsttime < muhDelay) {
-			sendnotice(sptr, "You have to be connected for at least %d seconds before sending private messages", muhDelay);
-			return NULL;
-		}
+	if(!MyConnect(sptr) || sptr == to || IsULine(sptr) || IsULine(to) || IsOper(sptr) || !IsPerson(sptr) || !IsPerson(to))
+		return text;
+
+	// Sanity check + delay check =]
+	if(sptr->local && TStime() - sptr->local->firsttime < muhDelay) {
+		sendnotice(sptr, "You have to be connected for at least %d seconds before sending private messages", muhDelay);
+		return NULL;
 	}
 	return text;
 }

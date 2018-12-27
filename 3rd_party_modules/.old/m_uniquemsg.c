@@ -28,7 +28,7 @@ ModDataInfo *umsgMDI; // To store some shit with the channel ;]
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_uniquemsg) = {
 	"m_uniquemsg", // Module name
-	"$Id: v1.01 2017/07/30 Gottem$", // Version
+	"$Id: v1.02 2018/04/16 Gottem$", // Version
 	"Implements chmode +U to prevent people from repeating messages", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -102,8 +102,8 @@ int wasRepeat(aChannel *chptr, char *text) {
 	char *last, *clean;
 	int repeat = 0;
 	if((last = moddata_channel(chptr, umsgMDI).str)) {
-		clean = (char *)StripControlCodes(StripColors(text)); // Strip all markup shit (bold, italikk etc) and colours
-		if(!stricmp(last, clean)) // Case-insensitive pls
+		clean = (char *)StripControlCodes(text); // Strip all markup shit (bold, italikk etc) and colours
+		if(clean && !stricmp(last, clean)) // Case-insensitive pls
 			repeat = 1;
 	}
 	return repeat;
@@ -148,6 +148,7 @@ int uniquemsg_chmode_isok(aClient *sptr, aChannel *chptr, char mode, char *para,
 }
 
 char *uniquemsg_hook_prechanmsg(aClient *sptr, aChannel *chptr, char *text, int notice) {
+	char *clean;
 	if(IsUMsg(chptr)) { // Only do shit when the chmode is set =]
 		if(!is_chanownprotop(sptr, chptr) && wasRepeat(chptr, text)) { // People with +o and higher are exempt from the limitation
 			sendto_one(sptr, ":%s NOTICE %s :This channel doesn't allow repeated messages", me.name, chptr->chname);
@@ -155,7 +156,9 @@ char *uniquemsg_hook_prechanmsg(aClient *sptr, aChannel *chptr, char *text, int 
 		}
 		if(moddata_channel(chptr, umsgMDI).str) // Already got a string
 			free(moddata_channel(chptr, umsgMDI).str); // Free it first
-		moddata_channel(chptr, umsgMDI).str = strdup((char *)StripControlCodes(StripColors(text))); // Then dup 'em
+		clean = (char *)StripControlCodes(text);
+		moddata_channel(chptr, umsgMDI).str = (clean ? strdup(clean) : NULL); // Then dup 'em
 	}
 	return text;
 }
+

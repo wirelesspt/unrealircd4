@@ -1,3 +1,9 @@
+/* Copyright (C) All Rights Reserved
+** Written by Gottem <support@gottem.nl>
+** Website: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods
+** License: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods/raw/master/LICENSE
+*/
+
 // One include for all cross-platform compatibility thangs
 #include "unrealircd.h"
 
@@ -15,11 +21,11 @@
 		} \
 	} while(0)
 
-typedef struct t_exemption muhExempt;
+typedef struct t_exception muhExcept;
 typedef struct t_msg muhMessage;
-struct t_exemption {
+struct t_exception {
 	char *mask;
-	muhExempt *next;
+	muhExcept *next;
 };
 struct t_msg {
 	char *last;
@@ -44,7 +50,7 @@ void repeatprot_free(ModData *md);
 static ModuleInfo *repeatprotMI = NULL; // Store ModuleInfo so we can use it to check for errors in MOD_LOAD
 Cmdoverride *inviteOvr, *operOvr, *noticeOvr, *privmsgOvr; // Pointers to the overrides we're gonna add
 ModDataInfo *repeatprotMDI; // To store every user's last message with their client pointer ;3
-muhExempt *exemptList = NULL; // Stores exempted masks
+muhExcept *exceptionList = NULL; // Stores exempted masks
 
 // Deez defaults
 int repeatThreshold = 3; // After how many repeated message the action kicks in
@@ -63,7 +69,7 @@ time_t trigTimespan = 0;
 // Dat dere module header
 ModuleHeader MOD_HEADER(m_repeatprot) = {
 	"m_repeatprot", // Module name
-	"$Id: v1.26 2018/04/16 Gottem$", // Version
+	"$Id: v1.27 2018/11/04 Gottem$", // Version
 	"G(Z):Line/kill users (or block their messages) who spam through CTCP, INVITE, OPER, NOTICE and/or PRIVMSG", // Description
 	"3.2-b8-1", // Modversion, not sure wat do
 	NULL
@@ -113,14 +119,15 @@ MOD_LOAD(m_repeatprot) {
 
 // Called on unload/rehash obv
 MOD_UNLOAD(m_repeatprot) {
-	if(exemptList) {
+	if(exceptionList) {
 		// This shit is a bit convoluted to prevent memory issues obv famalmalmalmlmalm
-		muhExempt *exEntry;
-		while((exEntry = exemptList) != NULL) {
-			exemptList = exemptList->next;
+		muhExcept *exEntry;
+		while((exEntry = exceptionList) != NULL) {
+			exceptionList = exceptionList->next;
+			if(exEntry->mask) free(exEntry->mask);
 			free(exEntry);
 		}
-		exemptList = NULL;
+		exceptionList = NULL;
 	}
 	return MOD_SUCCESS; // We good
 }
@@ -188,13 +195,13 @@ int repeatprot_configtest(ConfigFile *cf, ConfigEntry *ce, int type, int *errs) 
 		if(!strcmp(cep->ce_varname, "threshold")) {
 			// Should be an integer yo
 			if(!cep->ce_vardata) {
-				config_error("%s:%i: repeatprot::threshold must be an integer of zero or larger m8", cep->ce_fileptr->cf_filename, cep->ce_varlinenum);
+				config_error("%s:%i: repeatprot::threshold must be an integer of 0 or larger m8", cep->ce_fileptr->cf_filename, cep->ce_varlinenum);
 				errors++; // Increment err0r count fam
 				continue;
 			}
 			for(i = 0; cep->ce_vardata[i]; i++) {
 				if(!isdigit(cep->ce_vardata[i])) {
-					config_error("%s:%i: repeatprot::threshold must be an integer of zero or larger m8", cep->ce_fileptr->cf_filename, cep->ce_varlinenum);
+					config_error("%s:%i: repeatprot::threshold must be an integer of 0 or larger m8", cep->ce_fileptr->cf_filename, cep->ce_varlinenum);
 					errors++; // Increment err0r count fam
 					break;
 				}
@@ -231,18 +238,18 @@ int repeatprot_configtest(ConfigFile *cf, ConfigEntry *ce, int type, int *errs) 
 			continue;
 		}
 
-		// Also dem exemptions
-		if(!strcmp(cep->ce_varname, "exemptions")) {
+		// Also dem exceptions
+		if(!strcmp(cep->ce_varname, "exceptions")) {
 			// Loop 'em
 			for(cep2 = cep->ce_entries; cep2; cep2 = cep2->ce_next) {
 				if(!cep2->ce_varname) {
-					config_error("%s:%i: blank exemption mask", cep2->ce_fileptr->cf_filename, cep2->ce_varlinenum); // Rep0t error
+					config_error("%s:%i: blank exception mask", cep2->ce_fileptr->cf_filename, cep2->ce_varlinenum); // Rep0t error
 					errors++; // Increment err0r count fam
 					continue; // Next iteration imo tbh
 				}
 
 				if(match("*!*@*", cep2->ce_varname)) {
-					config_error("%s:%i: invalid nick!user@host exemption mask", cep2->ce_fileptr->cf_filename, cep2->ce_varlinenum); // Rep0t error
+					config_error("%s:%i: invalid nick!user@host exception mask", cep2->ce_fileptr->cf_filename, cep2->ce_varlinenum); // Rep0t error
 					errors++; // Increment err0r count fam
 					continue; // Next iteration imo tbh
 				}
@@ -272,8 +279,8 @@ int repeatprot_configposttest(int *errs) {
 // "Run" the config (everything should be valid at this point)
 int repeatprot_configrun(ConfigFile *cf, ConfigEntry *ce, int type) {
 	ConfigEntry *cep, *cep2; // To store the current variable/value pair etc, nested
-	muhExempt *last = NULL; // Initialise to NULL so the loop requires minimal l0gic
-	muhExempt **exEntry = &exemptList; // Hecks so the ->next chain stays intact
+	muhExcept *last = NULL; // Initialise to NULL so the loop requires minimal l0gic
+	muhExcept **exEntry = &exceptionList; // Hecks so the ->next chain stays intact
 
 	// Since we'll add a top-level block to unrealircd.conf, need to filter on CONFIG_MAIN lmao
 	if(type != CONFIG_MAIN)
@@ -361,7 +368,7 @@ int repeatprot_configrun(ConfigFile *cf, ConfigEntry *ce, int type) {
 			continue;
 		}
 
-		if(!strcmp(cep->ce_varname, "exemptions")) {
+		if(!strcmp(cep->ce_varname, "exceptions")) {
 			// Loop 'em
 			for(cep2 = cep->ce_entries; cep2; cep2 = cep2->ce_next) {
 				if(!cep2->ce_varname)
@@ -371,7 +378,7 @@ int repeatprot_configrun(ConfigFile *cf, ConfigEntry *ce, int type) {
 				size_t masklen = sizeof(char) * (strlen(cep2->ce_varname) + 1);
 
 				// Allocate mem0ry for the current entry
-				*exEntry = malloc(sizeof(muhExempt));
+				*exEntry = malloc(sizeof(muhExcept));
 
 				// Allocate/initialise shit here
 				(*exEntry)->mask = malloc(masklen);
@@ -453,13 +460,6 @@ void blockIt(aClient *sptr) {
 int doKill(aClient *cptr, aClient *sptr) {
 	char msg[BUFSIZE];
 	snprintf(msg, sizeof(msg), "[%s] %s (%s)", me.name, (MyConnect(sptr) ? "Local kill" : "Killed"), tklMessage);
-
-	char *parv[3] = {
-		NULL,
-		sptr->name,
-		msg
-	};
-
 	sendto_snomask_normal(SNO_KILLS, "*** [repeatprot] Received KILL message for %s!%s@%s from %s",
 		sptr->name, sptr->user->username,
 		IsHidden(sptr) ? sptr->user->virthost : sptr->user->realhost,
@@ -520,7 +520,7 @@ static int repeatprot_override(Cmdoverride *ovr, aClient *cptr, aClient *sptr, i
 	char *werd; // Store each w0rd from the message
 	aClient *acptr; // Store /message target
 	muhMessage *message; // Current/new message struct
-	muhExempt *exEntry; // For iteration yo
+	muhExcept *exEntry; // For iteration yo
 
 	// Lest we massively shit ourselves =]
 	if(!sptr || BadPtr(parv[1]) || BadPtr(parv[2]) || BadPtr(parv[parc - 1]))
@@ -539,7 +539,7 @@ static int repeatprot_override(Cmdoverride *ovr, aClient *cptr, aClient *sptr, i
 	ctcpreply = (!strcmp(cmd, "NOTICE") && ctcp);
 	invite = (!strcmp(cmd, "INVITE"));
 
-	for(exEntry = exemptList; exEntry; exEntry = exEntry->next) {
+	for(exEntry = exceptionList; exEntry; exEntry = exEntry->next) {
 		if(!match(exEntry->mask, make_nick_user_host(sptr->name, sptr->user->username, sptr->user->realhost)) || !match(exEntry->mask, make_nick_user_host(sptr->name, sptr->user->username, sptr->ip))) {
 			exempt = 1;
 			break;

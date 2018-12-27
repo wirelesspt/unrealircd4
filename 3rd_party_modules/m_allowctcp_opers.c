@@ -1,3 +1,9 @@
+/* Copyright (C) All Rights Reserved
+** Written by Gottem <support@gottem.nl>
+** Website: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods
+** License: https://gitgud.malvager.net/Wazakindjes/unrealircd_mods/raw/master/LICENSE
+*/
+
 // One include for all cross-platform compatibility thangs
 #include "unrealircd.h"
 
@@ -146,7 +152,6 @@ void override_md_free(ModData *md) {
 
 void check_stale_overrides(aClient *sptr) {
 	int ping; // Expiration time is the same as ping timeouts ;]
-	time_t nao; // Current time
 	cOverride *covrList, *covr, *next; // Sum iter8ors lol
 	if(!sptr || !sptr->local) // r u insaiyan?
 		return;
@@ -157,7 +162,6 @@ void check_stale_overrides(aClient *sptr) {
 		#else
 			ping = (sptr->local->class ? sptr->local->class->pingfreq : iConf.handshake_timeout);
 		#endif
-		nao = TStime();
 		for(covr = covrList; covr; covr = next) { // Iterate em lol
 			next = covr->next; // Next one imo
 			if(ping > (TStime() - sptr->local->lasttime)) // Still good
